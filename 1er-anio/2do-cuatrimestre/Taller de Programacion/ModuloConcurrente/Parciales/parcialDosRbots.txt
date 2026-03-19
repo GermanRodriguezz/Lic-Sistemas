@@ -1,0 +1,122 @@
+programa parcial
+procesos
+  proceso juntarFlor(ES f:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f := f + 1
+  fin
+  proceso juntarPapel(ES p: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      p := p + 1
+  fin
+  proceso depositar (E flores:numero; E papeles: numero)
+  variables
+    x,y,cant: numero
+  comenzar
+    x := PosAv
+    y := PosCa
+    repetir flores
+      BloquearEsquina(21,21)
+      Pos(21,21)
+      si (HayFlorEnLaBolsa)
+        depositarFlor
+      Pos(x,y)
+      LiberarEsquina(21,21)
+    repetir papeles
+      BloquearEsquina(22,22)
+      Pos(22,22)
+      si (HayPapelEnLaBolsa)
+        depositarPapel
+      Pos(x,y)
+      LiberarEsquina(22,22)
+  fin
+  proceso rectangulo(E id:numero; E alto:numero; E ancho: numero; ES flores:numero; ES papeles:numero)
+  variables
+    objetos: numero
+  comenzar
+    repetir alto
+      juntarFlor(flores)
+      juntarPapel(papeles)
+      mover
+    depositar(flores,papeles)
+    EnviarMensaje(id,rc)
+    EnviarMensaje(flores,rc)
+    EnviarMensaje(papeles,rc)
+    derecha
+    repetir ancho
+      juntarFlor(flores)
+      juntarPapel(papeles)
+      mover
+    depositar(flores,papeles)
+    EnviarMensaje(id,rc)
+    EnviarMensaje(flores,rc)
+    EnviarMensaje(papeles,rc)
+  fin
+areas
+  Punto : AreaPC(21,21,22,22)
+  area1 : AreaP(23,23,23,23)
+  areaReco1 : AreaP(1,1,20,20)
+  areaReco2 : AreaP(21,1,40,20)
+robots
+  robot recolector
+  variables
+    id,alto,ancho,flores,papeles: numero
+  comenzar
+    RecibirMensaje(id,rc)
+    RecibirMensaje(alto,rc)
+    RecibirMensaje(ancho,rc)
+    repetir 2
+      rectangulo(id,alto,ancho,flores,papeles)
+      derecha
+  fin
+  robot coordinador
+  variables
+    id,alto,ancho,papeles,flores,floresR1,floresR2,papelesR1,papelesR2: numero
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    Random(alto,1,20)
+    Random(ancho,1,20)
+    EnviarMensaje(alto,r1)
+    EnviarMensaje(ancho,r1)
+    EnviarMensaje(alto,r2)
+    EnviarMensaje(ancho,r2)
+    repetir 2
+      repetir 4
+        RecibirMensaje(id,*)
+        si ( id = 1)
+          RecibirMensaje(flores,r1)
+          RecibirMensaje(papeles,r1)
+          floresR1 := floresR1 + flores
+          papelesR1 := papelesR1 + papeles
+        sino
+          RecibirMensaje(flores,r2)
+          RecibirMensaje(papeles,r2)
+          floresR2 := floresR2 + flores
+          papelesR2 := papelesR2 + papeles
+    si (floresR1 < floresR2)
+      Informar('el que junto mas flores fue rob2 con ',floresR2)
+    sino
+      Informar('el que junto mas flores fue rob1 con ',floresR1)
+    si (papelesR1 < papelesR2)
+      Informar('el que junto mas papeles fue rob2 con ', papelesR2)
+    sino
+      Informar('el que junto mas papeles fue rob1 con ',papelesR1)
+  fin
+variables
+  r1 : recolector
+  r2 : recolector
+  rc : coordinador
+comenzar
+  AsignarArea(r1,Punto)
+  AsignarArea(r1,areaReco1)
+  AsignarArea(r2,Punto)
+  AsignarArea(r2,areaReco2)
+  AsignarArea(rc,area1)
+  Iniciar(rc,23,23)
+  Iniciar(r1,1,1)
+  Iniciar(r2,21,1)
+fin

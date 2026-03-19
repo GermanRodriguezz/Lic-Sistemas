@@ -1,0 +1,59 @@
+programa ejemplo
+procesos
+  proceso recorridoPar(E numAv: numero)
+  comenzar
+    Pos(numAv,1)
+    repetir 99
+      si (HayPapelEnLaEsquina)
+        mientras (HayPapelEnLaEsquina)
+          tomarPapel
+      mover
+  fin
+  proceso LimpiezaPar(E posAv:numero)
+  comenzar
+    repetir 25
+      recorridoPar(posAv)
+      posAv := posAv + 1
+  fin
+  proceso recorridoImpar(E numAv: numero)
+  comenzar
+    Pos(numAv,1)
+    repetir 99
+      si (HayFlorEnLaEsquina)
+        mientras (HayFlorEnLaEsquina)
+          tomarFlor
+      mover
+  fin
+  proceso LimpiezaImpar(E posAv: numero)
+  comenzar
+    repetir 25
+      recorridoImpar(posAv)
+      posAv := posAv + 1
+  fin
+areas
+  area1: AreaC (1,1,25,100)
+  area2: AreaC (26,1,50,100)
+  area3: AreaC (51,1,75,100)
+  area4: AreaC (76,1,100,100)
+robots
+  robot t1
+  comenzar
+    LimpiezaImpar(1)
+    LimpiezaImpar(51)
+  fin
+  robot t2
+  comenzar
+    LimpiezaPar(26)
+    LimpiezaPar(76)
+  fin
+variables
+  R1: t1
+  R2: t2
+comenzar
+  AsignarArea(R1, area1)
+  AsignarArea(R1,area3)
+  AsignarArea(R2,area2)
+  AsignarArea(R2,area4)
+  Iniciar(R1, 1,1)
+  Iniciar(R2,26,1)
+fin

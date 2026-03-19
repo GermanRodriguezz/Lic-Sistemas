@@ -1,0 +1,91 @@
+programa ejemplo
+procesos
+  proceso juntarPapeles(ES p: numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      p := p + 1
+  fin
+  proceso llevar(E av:numero; E ca:numero)
+  comenzar
+    Pos(50,50)
+    repetir 5
+      depositarPapel
+    Pos(av,ca)
+  fin
+  proceso traer(E cantidad:numero; E av:numero; E ca:numero;ES intento:numero; E papel:numero)
+  comenzar
+    Pos(50,50)
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papel:= papel + 1
+    si (papel >= cantidad)
+      Pos(av,ca)
+      repetir cantidad
+        depositarPapel
+    sino
+      intento := intento + 1
+      Pos(av,ca)
+  fin
+areas
+  zonaP1: AreaP (5,1,5,100)
+  zonaP2: AreaP (10,1,10,100)
+  zonaC1: AreaP (11,1,11,1)
+  zonaC2: AreaP (12,1,12,1)
+  Punto: AreaC (50,50,50,50)
+robots
+  robot productores
+  variables
+    avAct,caAct,p:numero
+  comenzar
+    p:=0
+    repetir 99
+      avAct:= PosAv
+      caAct:= PosCa
+      juntarPapeles(p)
+      si (p >= 5)
+        BloquearEsquina(50,50)
+        llevar(avAct,caAct)
+        LiberarEsquina(50,50)
+        p:=0
+      mover
+    juntarPapeles(p)
+    si (p >= 5)
+      BloquearEsquina(50,50)
+      llevar(avAct,caAct)
+      LiberarEsquina(50,50)
+  fin
+  robot consumidores
+  variables
+    avOr,caOr,int,cantidad,p:numero
+  comenzar
+    int:=0
+    p:=0
+    mientras(int <= 8)
+      avOr:= PosAv
+      caOr:= PosCa
+      Random(cantidad,2,5)
+      BloquearEsquina(50,50)
+      traer(cantidad,avOr,caOr,int,p)
+      LiberarEsquina(50,50)
+    Informar('el consumidor tomo',p)
+  fin
+variables
+  rp1:productores
+  rp2:productores
+  rc1:consumidores
+  rc2:consumidores
+comenzar
+  AsignarArea(rp1, zonaP1)
+  AsignarArea(rp2,zonaP2)
+  AsignarArea(rc1,zonaC1)
+  AsignarArea(rc2,zonaC2)
+  AsignarArea(rp1,Punto)
+  AsignarArea(rp2,Punto)
+  AsignarArea(rc1,Punto)
+  AsignarArea(rc2,Punto)
+  Iniciar(rp1,5,1)
+  Iniciar(rp2,10,1)
+  Iniciar(rc1,11,1)
+  Iniciar(rc2,12,1)
+fin

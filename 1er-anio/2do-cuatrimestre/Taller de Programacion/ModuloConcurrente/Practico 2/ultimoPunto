@@ -1,0 +1,158 @@
+programa Prac2ejer4
+procesos
+  proceso sacarMaxCant(E c1:numero; E c2:numero; E c3:numero; E c4:numero; ES id:numero)
+  variables
+    max:numero
+  comenzar
+    max := -1
+    si (c1 > max)
+      max := c1
+      id := 1
+    si (c2 > max)
+      max := c2
+      id := 2
+    si (c3> max)
+      max := c3
+      id := 3
+    si (c4> max)
+      max := c4
+      id := 4
+    Informar('el max es',max)
+  fin
+  proceso sacarMaxRobot(ES id:numero)
+  comenzar
+    si (id = 1)
+      EnviarMensaje(V,r1)
+      EnviarMensaje(F,r2)
+      EnviarMensaje(F,r3)
+      EnviarMensaje(F,r4)
+    sino
+      si (id = 2)
+        EnviarMensaje(V,r2)
+        EnviarMensaje(F,r1)
+        EnviarMensaje(F,r3)
+        EnviarMensaje(F,r4)
+      sino
+        si (id = 3)
+          EnviarMensaje(V,r3)
+          EnviarMensaje(F,r1)
+          EnviarMensaje(F,r2)
+          EnviarMensaje(F,r3)
+        sino 
+          EnviarMensaje(V,r4)
+          EnviarMensaje(F,r1)
+          EnviarMensaje(F,r2)
+          EnviarMensaje(F,r3)
+  fin
+  proceso juntar(ES flores:numero; ES papeles:numero )
+  comenzar 
+    mientras HayFlorEnLaEsquina 
+      tomarFlor 
+      flores:=flores+1
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papeles:=papeles +1
+  fin 
+areas
+  ciudad: AreaPC(25,25,75,75)
+  ciudad1:AreaP(25,1,25,1)
+  ciudad2:AreaP(30,1,30,1)
+  ciudad3:AreaP(35,1,35,1)
+  ciudad4:AreaP(40,1,40,1)
+  ciudad5:AreaP(1,1,1,1)
+robots
+  robot recolector
+  variables
+    calle:numero
+    avenida:numero
+    iden:numero
+    avInicial:numero
+    calleInicial:numero
+    lib,ganaste:boolean
+    f,p,total:numero
+  comenzar
+    RecibirMensaje(iden,r5)
+    RecibirMensaje(lib,r5)
+    si (lib = V)
+      mientras (lib = V)
+        avInicial:= PosAv
+        calleInicial:=PosCa
+        Random(avenida,25,75)
+        Random(calle,25,75)
+        Pos(avenida,calle)
+        juntar(f,p)
+        total := f + p
+        lib:= F
+        Informar('termine asique',lib)
+        Pos(avInicial,calleInicial)
+        EnviarMensaje(total,r5)
+    RecibirMensaje(ganaste,r5)
+    si (ganaste = V)
+      Pos(50,50)
+  fin
+  robot fizcalizador 
+  variables
+    libre:boolean 
+    id,idMax,cantR1,cantR2,cantR3,cantR4,c1,c2,c3,c4:numero
+    accesos:numero
+  comenzar
+    libre:= V
+    c1:=0
+    c2:=0
+    c3:=0
+    c4:=0  
+    repetir 4
+      Random(id,1,4)
+      Informar('se genero el id',id)
+      si (id = 1)
+        EnviarMensaje(1,r1)
+        EnviarMensaje(libre,r1)
+        RecibirMensaje(cantR1,r1)
+        c1 := c1 + cantR1
+        libre:=V
+      sino
+        si(id = 2)
+          EnviarMensaje(2,r2)
+          EnviarMensaje(libre,r2)
+          RecibirMensaje(cantR2,r2)
+          c2 := c2 + cantR2
+          libre:=V
+        sino 
+          si (id=3)
+            EnviarMensaje(3,r3)
+            EnviarMensaje(libre,r3) 
+            RecibirMensaje(cantR3,r3)
+            c3 := c3 + cantR3
+            libre:=V
+          sino 
+            si (id=4)
+              EnviarMensaje(4,r4)
+              EnviarMensaje(libre,r4)
+              RecibirMensaje(cantR4,r4)
+              c4 := c4 + cantR4
+              libre:=V
+    sacarMaxCant(c1,c2,c3,c4,idMax)
+    sacarMaxRobot(idMax)
+  fin
+variables
+  r1: recolector
+  r2:recolector
+  r3:recolector
+  r4:recolector
+  r5:fizcalizador 
+comenzar
+  AsignarArea(r1, ciudad1)
+  AsignarArea(r2, ciudad2)
+  AsignarArea(r3, ciudad3)
+  AsignarArea(r4, ciudad4)
+  AsignarArea(r5, ciudad5)
+  AsignarArea(r1,ciudad)
+  AsignarArea(r2,ciudad)
+  AsignarArea(r3,ciudad)
+  AsignarArea(r4,ciudad)
+  Iniciar(r1,25,1)
+  Iniciar(r2,30,1)
+  Iniciar(r3,35,1)
+  Iniciar(r4,40,1)
+  Iniciar(r5,1,1)
+fin

@@ -1,0 +1,133 @@
+programa ejemplo
+procesos
+  proceso limpiar(ES f:numero; ES p:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      f := f +1
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      p := p + 1
+  fin
+  proceso depositar(E av:numero; E ca:numero)
+  variables
+    x,y:numero
+  comenzar
+    x := PosAv
+    y := PosCa
+    BloquearEsquina(av,ca)
+    Pos(av,ca)
+    si (HayFlorEnLaBolsa)
+      depositarFlor
+    Pos(x,y)
+    LiberarEsquina(av,ca)
+  fin
+  proceso LimpiarAvenidaPar
+  variables
+    av,ca,id,f,p,avenida,calle:numero
+  comenzar
+    av := PosAv
+    repetir 4
+      Pos(av,1)
+      repetir 99
+        limpiar(f,p)
+        mover
+      RecibirMensaje(avenida,rc)
+      RecibirMensaje(calle,rc)
+      repetir f
+        depositar(avenida,calle)
+      repetir p
+        depositar(avenida,calle)
+      av := av+2
+  fin
+  proceso LimpiarAvenidaImpar
+  variables
+    f,p,calle,avenida,av,ca: numero
+  comenzar
+    av := PosAv
+    repetir 4
+      Pos(av,1)
+      repetir 99
+        limpiar(f,p)
+        mover
+      RecibirMensaje(avenida,rc)
+      RecibirMensaje(calle,rc)
+      repetir f
+        depositar(avenida,calle)
+      repetir p
+        depositar(avenida,calle)
+      av := av+ 2
+  fin
+  proceso limpiarCuadrante
+  variables
+    x,y:numero
+  comenzar
+    x := 40
+    y := 40
+    Pos(x,y)
+    repetir 5
+      repetir 5
+        mientras (HayFlorEnLaEsquina)
+          tomarFlor
+        mientras (HayPapelEnLaEsquina)
+          tomarPapel
+        mover
+      Pos(x+1,y)
+  fin
+areas
+  cuadrante: AreaC (40,40,45,45)
+  areaLimpieza: AreaPC (4,1,11,100)
+  arearc : AreaP (1,1,1,1)
+robots
+  robot robotPar
+  variables
+    id: numero
+  comenzar
+    RecibirMensaje(id,rc)
+    LimpiarAvenidaPar
+    EnviarMensaje(id,rc)
+  fin
+  robot robotImpar
+  variables
+    id: numero
+  comenzar
+    RecibirMensaje(id,rc)
+    LimpiarAvenidaImpar
+    EnviarMensaje(id,rc)
+  fin
+  robot coordinador
+  variables
+    id,av,ca,idGanador:numero
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    repetir 4
+      Random(av,40,45)
+      Random(ca,40,45)
+      EnviarMensaje(av,r1)
+      EnviarMensaje(av,r2)
+      EnviarMensaje(ca,r1)
+      EnviarMensaje(ca,r2)
+    RecibirMensaje(id,*)
+    si (id = 1)
+      idGanador := 1
+    sino
+      idGanador := 2
+    limpiarCuadrante
+    Informar('el robo ganador es el ',idGanador)
+  fin
+variables
+  r1: robotPar
+  r2 : robotImpar
+  rc: coordinador
+comenzar
+  AsignarArea(rc, arearc)
+  AsignarArea(rc,cuadrante)
+  AsignarArea(r1,areaLimpieza)
+  AsignarArea(r1,cuadrante)
+  AsignarArea(r2,areaLimpieza)
+  AsignarArea(r2,cuadrante)
+  Iniciar(rc, 1,1)
+  Iniciar(r1, 4,1)
+  Iniciar(r2, 5,1)
+fin

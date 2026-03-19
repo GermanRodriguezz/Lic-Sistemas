@@ -1,0 +1,97 @@
+programa ejemplo
+procesos
+  proceso juntarPapel(ES cant: numero)
+  comenzar
+    si (HayPapelEnLaEsquina)
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel
+        cant := cant + 1
+  fin
+  proceso cuadrado1(E lado:numero; ES papeles: numero)
+  comenzar
+    repetir 4
+      repetir lado
+        juntarPapel(papeles)
+        mover
+      derecha
+  fin
+  proceso cuadrado2(E lado:numero; ES pap:numero)
+  comenzar
+    derecha
+    repetir 4
+      repetir lado
+        juntarPapel(pap)
+        mover
+      derecha
+  fin
+  proceso cuadrado3(E lado:numero; ES papel:numero)
+  comenzar
+    repetir 2
+      derecha
+    repetir 4
+      repetir lado
+        juntarPapel(papel)
+        mover
+      derecha
+  fin
+  proceso cuadrado4(E lado:numero; ES papel:numero)
+  comenzar
+    repetir 3
+      derecha
+    repetir 4
+      repetir lado
+        juntarPapel(papel)
+        mover
+      derecha
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot tipo1
+  variables
+    papeles: numero
+  comenzar
+    papeles :=0
+    cuadrado1(20,papeles)
+    Informar('agarro ' , papeles )
+  fin
+  robot tipo2
+  variables
+    papeles: numero
+  comenzar
+    papeles:=0
+    cuadrado2(20,papeles)
+    Informar(papeles)
+  fin
+  robot tipo3
+  variables
+    papeles:numero
+  comenzar
+    papeles:=0
+    cuadrado3(20,papeles)
+    Informar(papeles)
+  fin
+  robot tipo4
+  variables
+    papeles:numero
+  comenzar
+    papeles:= 0
+    cuadrado4(20,papeles)
+    Informar(papeles)
+  fin
+  
+variables
+  robo1: tipo1
+  robo2 : tipo2
+  robo3 : tipo3
+  robo4 : tipo4
+comenzar
+  AsignarArea(robo1, ciudad)
+  AsignarArea(robo2,ciudad)
+  AsignarArea(robo3,ciudad)
+  AsignarArea(robo4,ciudad)
+  Iniciar(robo1,10,10)
+  Iniciar(robo2,10,30)
+  Iniciar(robo3,30,30)
+  Iniciar(robo4,30,10)
+fin

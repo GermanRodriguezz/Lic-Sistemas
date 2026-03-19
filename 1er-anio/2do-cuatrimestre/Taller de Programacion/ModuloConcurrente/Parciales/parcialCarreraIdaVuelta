@@ -1,0 +1,147 @@
+programa ejemplo
+procesos
+  proceso juntarF(ES f:numero)
+  comenzar
+    si (HayFlorEnLaEsquina)
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        f:= f + 1
+  fin
+  proceso juntarP(ES p:numero)
+  comenzar
+    si (HayPapelEnLaEsquina)
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel
+        p:= p + 1
+  fin
+  proceso ida(ES f: numero; ES x:numero)
+  comenzar
+    repetir 4
+      juntarF(f)
+      x:= x + 1
+      mover
+  fin
+  proceso vuelta(ES p:numero;ES x:numero)
+  comenzar
+    repetir 4
+      juntarP(p)
+      x:= x - 1
+      mover
+  fin
+areas
+  Punto: AreaPC (6,6,6,6)
+  arear11: AreaP (1,5,5,5)
+  arear12: AreaP (7,7,11,7)
+  arear21: AreaP (1,7,5,7)
+  arear22: AreaP (7,5,11,5)
+  arearf: AreaP (1,6,1,6)
+robots
+  robot corredor1
+  variables
+    f,p,x,y,id:numero
+  comenzar
+    id:= 1
+    f:= 0
+    p:= 0 
+    derecha
+    x:= PosAv
+    y:= PosCa
+    ida(f,x)
+    BloquearEsquina(6,6)
+    Pos(x+1,y+1){ACA X = 6, Y = 6}
+    juntarF(f)
+    Pos(x+2,y+2){ACA X= 7, Y= 7}
+    LiberarEsquina(6,6)
+    ida(f,x)
+    EnviarMensaje(id,rf)
+    EnviarMensaje(f,rf)
+    repetir 2
+      derecha
+    vuelta(p,x)
+    BloquearEsquina(6,6)
+    Pos(x+1,y+1){ACA X = 6, Y = 6}
+    juntarP(p)
+    Pos(x,y){ACA X = 5,Y = 5}
+    LiberarEsquina(6,6)
+    vuelta(p,x)
+    EnviarMensaje(id,rf)
+    EnviarMensaje(p,rf)
+  fin
+  robot corredor2
+  variables
+    x,y,f,p,id:numero
+  comenzar
+    id:= 2
+    derecha
+    x:= PosAv
+    y:= PosCa
+    f:=0
+    p:=0
+    ida(f,x)
+    BloquearEsquina(6,6)
+    Pos(x+1,y-1){ACA X=6, Y=6}
+    juntarF(f)
+    Pos(x+2,y-2){ACA X=7, Y=5}
+    LiberarEsquina(6,6)
+    ida(f,x)
+    EnviarMensaje(id,rf)
+    EnviarMensaje(f,rf)
+    repetir 2
+      derecha
+    vuelta(p,x)
+    BloquearEsquina(6,6)
+    Pos(x+1,y-1){ACA X=6, Y=6}
+    juntarP(p)
+    Pos(x,y)
+    LiberarEsquina(6,6)
+    vuelta(p,x)
+    EnviarMensaje(id,rf)
+    EnviarMensaje(p,rf)
+  fin
+  robot fiscal
+  variables
+    id,robGanador,flores1,flores2,papeles1,papeles2:numero
+  comenzar
+    repetir 2
+      RecibirMensaje(id,*)
+      si (id = 1)
+        RecibirMensaje(flores1,r1)
+      sino
+        si (id = 2)
+          RecibirMensaje(flores2,r2)
+    si (flores1>flores2)
+      robGanador:= 1
+    sino
+      si (flores1<flores2)
+        robGanador:= 2
+    Informar('el rob que junto mas flores fue',robGanador)
+    repetir 2
+      RecibirMensaje(id,*)
+      si (id = 1)
+        RecibirMensaje(papeles1,r1)
+      sino
+        si (id = 2)
+          RecibirMensaje(papeles2,r2)
+    si (papeles1>papeles2)
+      robGanador:= 1
+    sino
+      si (papeles1<papeles2)
+        robGanador:=2
+    Informar('el rob que mas papeles junto fue',robGanador)
+  fin
+variables
+  rf: fiscal
+  r1: corredor1
+  r2: corredor2
+comenzar
+  AsignarArea(rf,arearf)
+  AsignarArea(r1,arear11)
+  AsignarArea(r1,arear12)
+  AsignarArea(r1,Punto)
+  AsignarArea(r2,arear21)
+  AsignarArea(r2,arear22)
+  AsignarArea(r2,Punto)
+  Iniciar(rf,1,6)
+  Iniciar(r1,1,5)
+  Iniciar(r2,1,7)
+fin

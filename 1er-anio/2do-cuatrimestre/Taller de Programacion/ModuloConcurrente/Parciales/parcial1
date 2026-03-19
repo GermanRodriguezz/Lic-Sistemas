@@ -1,0 +1,126 @@
+programa ejemplo
+procesos
+  proceso juntarF(ES f: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      f:= f + 1
+  fin
+  proceso juntarP(ES p: numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      p:= p + 1
+  fin
+  proceso rectangulo(E alt: numero;ES anc:numero; E id:numero)
+  variables
+    f,p,ultAv,ultCa:numero
+  comenzar
+    repetir alt
+      juntarF(f)
+      juntarP(p)
+      mover
+      ultAv:= PosAv
+      ultCa:= PosCa
+    BloquearEsquina(21,21)
+    Pos(21,21)
+    repetir f
+      depositarFlor
+    BloquearEsquina(22,22)
+    Pos(22,22)
+    LiberarEsquina(21,21)
+    repetir p
+      depositarPapel
+    Pos(ultAv,ultCa)
+    LiberarEsquina(22,22)
+    EnviarMensaje(id,rc)
+    EnviarMensaje(f,rc)
+    f:= 0
+    EnviarMensaje(p,rc)
+    p:= 0 
+    Pos(ultAv,ultCa)
+    derecha
+    repetir anc
+      juntarF(f)
+      juntarP(p)
+      mover
+    ultAv:= PosAv
+    ultCa:= PosCa
+    BloquearEsquina(21,21)
+    Pos(21,21)
+    repetir f
+      depositarFlor
+    BloquearEsquina(22,22)
+    Pos(22,22)
+    LiberarEsquina(21,21)
+    repetir p
+      depositarPapel
+    Pos(ultAv,ultCa)
+    LiberarEsquina(22,22)
+    EnviarMensaje(id,rc)
+    EnviarMensaje(f,rc)
+    f:= 0
+    EnviarMensaje(p,rc)
+    p:= 0
+  fin
+areas
+  Punto: AreaPC (21,21,22,22)
+  areaT1: AreaP (1,1,20,20)
+  areaT2: AreaP (21,1,40,20)
+  areaCor: AreaP (23,23,23,23)
+robots
+  robot trabajador
+  variables
+    alto,ancho,id:numero
+  comenzar
+    RecibirMensaje(id,rc)
+    RecibirMensaje(alto,rc)
+    RecibirMensaje(ancho,rc)
+    repetir 2
+      rectangulo(alto,ancho,id)
+      derecha
+  fin
+  robot coordinador
+  variables
+    altura,ancho,id,cantObjR1,cantObjR2,flores,papeles:numero
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    repetir 2
+      Random(altura,1,19)
+      Random(ancho,1,19)
+      EnviarMensaje(altura,r1)
+      EnviarMensaje(ancho,r1)
+      EnviarMensaje(altura,r2)
+      EnviarMensaje(ancho,r2)
+      repetir 4
+        RecibirMensaje(id,*)
+        si (id = 1)
+          RecibirMensaje(flores,r1)
+          RecibirMensaje(papeles,r1)
+          cantObjR1:= cantObjR1 + flores + papeles
+        sino 
+          si (id = 2)
+            RecibirMensaje(flores,r2)
+            RecibirMensaje(papeles,r2)
+            cantObjR2:= cantObjR2 + flores + papeles
+    si(cantObjR1 > cantObjR2)
+      Informar('el rob con mas objetos fue',id)
+    sino
+      si (cantObjR1 < cantObjR2)
+        Informar('el rob con mas objetos fue',id)
+  fin
+variables
+  rc: coordinador
+  r1: trabajador
+  r2: trabajador
+comenzar
+  AsignarArea(rc, areaCor)
+  AsignarArea(r1,Punto)
+  AsignarArea(r1,areaT1)
+  AsignarArea(r2,areaT2)
+  AsignarArea(r2,Punto)
+  Iniciar(r1, 1,1)
+  Iniciar(r2,21,1)
+  Iniciar(rc,23,23)
+fin

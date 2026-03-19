@@ -1,0 +1,104 @@
+program uno
+type
+venta = record
+	numventa: integer;
+	cantproductos : integer;
+	tipopago : string;
+end;
+
+lista = ^nodo;
+nodo = record
+	dato : venta;
+	sig : lista;
+end;
+
+procedure leerventa(var v:venta);
+begin
+	readln(v.numventa);
+	readln(v.cantproductos);
+	readln(tipopago);
+end;
+
+{procedure cargarLista(var l:lista)} se dispone
+procedure insertar(var l:lista; v: venta);
+var
+	ant, act, nue: lista;
+begin
+	new(nue);
+	nue^.dato := v;
+	nue^.sig := nil;
+	if (l = nil) then
+		l := nue
+	else begin
+		act := l;
+		while (act <> nil) and (act^.dato.tipopago < v.tipopago) do begin
+			ant := act;
+			act := act^.sig;
+		end;
+		if (act = l) then begin
+			nue^.sig := l;
+			l := nue;
+		end
+		else
+			ant^.sig := nue;
+		nue^.sig := act;
+	end;
+		
+end;
+function cumple (num : integer): boolean;
+var
+	dig,par,imp: integer;
+begin
+	par :=0; imp := 0;
+	while (num <> 0) do begin
+		dig ::= num mod 10;
+		if (dig mod 2 = 0) then 
+			par := par + 1
+		else
+			imp := imp + 1;
+	end;
+	cumple := (par > imp);
+end;
+procedure armarLista(l:lista; var l2: lista);
+begin
+	while (l <> nil) do begin
+		if cumple(l^.dato.cantproductos) then
+			insertar(l2,l^.dato);
+		l := l^.sig;
+	end;
+end;
+
+var
+l,l2:lista;
+begin
+l:= nil;
+l2:= nil;
+cargarLista(l);
+armarLista(l,l2);
+end.
+
+//
+PUNTO 2
+
+los dos son validos ya que en el programa uno el vector es declarado en el typee y hay una variable que es del tipo vector declarado alli, y en el programa dos
+es valido de igual manera solamente que el vector no es declarado en el typee sino que es declarado como una variable.
+en el programa uno la variable D es de TIPO vector, y en el programa dos la variable D ES un vector.
+
+//
+PUNTO 3
+
+memoria estatica = 	26872 bytes
+memoria dinamica = 400 bytes
+
+//
+PUNTO 4
+
+tiempo de ejecucion = 602 + 506 = 1108
+
+//
+PUNTO 5
+a) falso. que el programa tenga modulos no quiere decir que sea mas eficiente.
+b) verdadero. el modulo calculo puede tener como parametro a la funcion auxiliar ya que son del mismo tipo.
+c) verdadero. no siempre es posible ya que el subrango debe ser de un tipo que sea simple pero a su vez ordinal.
+d) falso. ya que el repeat until se ejecuta 1 o mas veces y el while se ejecuta 0,1 o mas veces.
+e) verdadero. ya que tambien pueden comunicarse por variables globales.

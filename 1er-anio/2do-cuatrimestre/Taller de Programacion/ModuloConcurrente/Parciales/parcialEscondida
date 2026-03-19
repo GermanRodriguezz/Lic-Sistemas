@@ -1,0 +1,119 @@
+programa ejemplo
+procesos
+  proceso depositar
+  variables
+    AvIni,CaIni,av,ca:numero
+  comenzar
+    AvIni:= PosAv
+    CaIni:= PosCa
+    si (HayFlorEnLaEsquina)
+      tomarFlor
+    Random(av,10,13)
+    Random(ca,10,13)
+    Pos(av,ca)
+    si (HayFlorEnLaBolsa)
+      depositarFlor
+    Pos(AvIni,CaIni)
+  fin
+areas
+  Punto: AreaC (10,10,13,13)
+  areab1: AreaP(1,1,1,1)
+  areab2: AreaP(2,2,2,2)
+  areab3: AreaP(3,3,3,3)
+  areaEs: AreaP(4,4,4,4)
+robots
+  robot buscador
+  variables
+    encontre,deposito,sigo:boolean
+    av,ca,id,x,y:numero
+  comenzar
+    id:= PosAv
+    RecibirMensaje(deposito,re)
+    sigo:= V
+    mientras (sigo = V)
+      encontre:= F
+      Random(av,10,13)
+      Random(ca,10,13)
+      x:= PosAv
+      y:= PosCa
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      si (HayFlorEnLaEsquina)
+        tomarFlor
+        encontre:= V
+      Pos(x,y)
+      LiberarEsquina(av,ca)
+      EnviarMensaje(id,re)
+      EnviarMensaje(encontre,re)
+      RecibirMensaje(sigo,re)
+  fin
+  robot escondedor
+  variables
+    id,idGanador:numero
+    pudo,encontraron: boolean
+  comenzar
+    depositar
+    EnviarMensaje(V,r1)
+    EnviarMensaje(V,r2)
+    EnviarMensaje(V,r3)
+    mientras (encontraron = F)
+      RecibirMensaje(id,*)
+      si (id = 1)
+        RecibirMensaje(pudo,r1)
+        si (pudo = V){ENCONTRO LA FLOR ENTONCES}
+          idGanador:= id
+          encontraron:= V
+          EnviarMensaje(F,r1){NO SIGAS}
+        sino
+          EnviarMensaje(V,r1){SI SEGUI}
+      sino
+        si (id = 2)
+          RecibirMensaje(pudo,r2)
+          si (pudo = V)
+            idGanador:= id
+            encontraron:= V
+            EnviarMensaje(F,r2){NO SIGAS}
+          sino
+            EnviarMensaje(V,r2)
+        sino
+          si (id = 3)  
+            RecibirMensaje(pudo,r3)
+            si (pudo = V)
+              idGanador:= id
+              encontraron := V
+              RecibirMensaje(pudo,r3)
+              EnviarMensaje(F,r3){NO SIGAS}
+            sino
+              EnviarMensaje(V,r3)
+    si (idGanador = 1)
+      EnviarMensaje(F,r2)
+      EnviarMensaje(F,r3)
+    sino
+      si (idGanador = 2)
+        EnviarMensaje(F,r1)
+        EnviarMensaje(F,r3)
+      sino
+        si (idGanador = 3)
+          EnviarMensaje(F,r1)
+          EnviarMensaje(F,r2)
+    Informar('el ganador fue ',idGanador) 
+  fin
+variables
+  re: escondedor
+  r1: buscador
+  r2: buscador
+  r3: buscador
+comenzar
+  AsignarArea(re, Punto)
+  AsignarArea(re,areaEs)
+  AsignarArea(r1,Punto)
+  AsignarArea(r1,areab1)
+  AsignarArea(r2,Punto)
+  AsignarArea(r2,areab2)
+  AsignarArea(r3,Punto)
+  AsignarArea(r3,areab3)
+  Iniciar(re, 4,4)
+  Iniciar(r1,1,1)
+  Iniciar(r2,2,2)
+  Iniciar(r3,3,3)
+fin

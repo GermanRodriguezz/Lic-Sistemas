@@ -1,0 +1,141 @@
+programa ejemplo
+areas
+  areaInicio: AreaC (1,1,1,5)
+  areac1: AreaP(2,1,20,1)
+  areac2: AreaP(2,2,20,2)
+  areac3: AreaP(2,3,20,3)
+  areac4: AreaP(2,4,20,4)
+  Punto :AreaPC(1,6,1,6)
+robots
+  robot corredor
+  variables
+    id,avInicio,caInicio,f,p: numero
+    inicia,ganaste: boolean
+  comenzar
+    id := PosCa
+    avInicio:= PosAv
+    caInicio:= PosCa
+    RecibirMensaje(inicia,rf)
+    Pos(2,caInicio)
+    derecha
+    mientras (PosAv < 20)
+      si (HayFlorEnLaEsquina)
+        tomarFlor
+        f:= f + 1
+      mover
+    BloquearEsquina(1,6)
+    Pos(1,6)
+    repetir f
+      si (HayFlorEnLaBolsa)
+        depositarFlor
+    Pos(20,caInicio)
+    EnviarMensaje(id,rf)
+    LiberarEsquina(1,6)
+    RecibirMensaje(ganaste,rf)
+    si (ganaste = V)
+      repetir 2
+        derecha
+      RecibirMensaje(inicia,rf)
+      mientras(PosAv > 2)
+        si (HayPapelEnLaEsquina)
+          tomarPapel
+          p:= p + 1
+        mover
+      BloquearEsquina(1,6)
+      Pos(1,6)
+      repetir p
+        si (HayPapelEnLaBolsa)
+          depositarPapel
+      Pos(avInicio,caInicio)
+      LiberarEsquina(1,6)
+      EnviarMensaje(id,rf)
+    sino
+      Pos(avInicio,caInicio)
+  fin
+  robot fiscalizador
+  variables
+    numRob,idDelGanador,uno,dos,tres,cuatro: numero
+    puedeIniciar:boolean
+  comenzar
+    EnviarMensaje(V,r1)
+    EnviarMensaje(V,r2)
+    EnviarMensaje(V,r3)
+    EnviarMensaje(V,r4)
+    repetir 2
+      RecibirMensaje(numRob,*)
+      si (numRob = 1)
+        EnviarMensaje(V,r1)
+        puedeIniciar:= V
+        EnviarMensaje(puedeIniciar,r1)
+      sino
+        si (numRob= 2)
+          EnviarMensaje(V,r2)
+          puedeIniciar:= V
+          EnviarMensaje(puedeIniciar,r2)
+        sino
+          si (numRob = 3)
+            EnviarMensaje(V,r2)
+            puedeIniciar:= V
+            EnviarMensaje(puedeIniciar,r3)
+          sino
+            si (numRob = 4)
+              EnviarMensaje(V,r4)
+              puedeIniciar:= V
+              EnviarMensaje(puedeIniciar,r4)
+    repetir 2 
+      RecibirMensaje(numRob,*)
+      si (numRob = 1)
+        EnviarMensaje(F,r1)
+      sino
+        si (numRob= 2)
+          EnviarMensaje(F,r2)
+        sino
+          si (numRob = 3)
+            EnviarMensaje(F,r2)
+          sino
+            si (numRob = 4)
+              EnviarMensaje(F,r4)
+    RecibirMensaje(idDelGanador,*)
+    si (idDelGanador = 1)
+      uno := idDelGanador
+      Informar('el ganador fue el robo', uno)
+    sino
+      si (idDelGanador = 2)
+        dos := idDelGanador
+        Informar('el ganador fue el robo', dos)
+      sino
+        tres:= idDelGanador
+        si (idDelGanador = 3)
+          Informar('el ganador fue el robo', tres)
+        sino
+          cuatro:= idDelGanador
+          si (idDelGanador = 4)
+            Informar('el ganador fue el robo',cuatro)
+  fin
+variables
+  rf: fiscalizador
+  r1: corredor
+  r2: corredor
+  r3: corredor
+  r4: corredor
+comenzar
+  AsignarArea(rf, areaInicio)
+  AsignarArea(r1,areaInicio)
+  AsignarArea(r1,areac1)
+  AsignarArea(r1,Punto)
+  AsignarArea(r2,areaInicio)
+  AsignarArea(r2,areac2)
+  AsignarArea(r2,Punto)
+  AsignarArea(r3,areaInicio)
+  AsignarArea(r3,areac3)
+  AsignarArea(r3,Punto)
+  AsignarArea(r4,areaInicio)
+  AsignarArea(r4,areac4)
+  AsignarArea(r4,Punto)
+  Iniciar(rf, 1,5)
+  Iniciar(r1, 1,1)
+  Iniciar(r2, 1,2)
+  Iniciar(r3, 1,3)
+  Iniciar(r4, 1,4)
+  
+fin

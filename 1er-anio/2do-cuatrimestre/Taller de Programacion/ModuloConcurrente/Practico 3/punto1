@@ -1,0 +1,157 @@
+programa ejemplo
+procesos
+  proceso juntarFlores(ES f: numero)
+  comenzar
+    si (HayFlorEnLaEsquina)
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        f:= f + 1
+  fin
+  proceso depositarF(E f:numero)
+  comenzar
+    repetir f
+      si (HayFlorEnLaBolsa)
+        depositarFlor
+    Informar('deposite todas las flores',f)
+  fin
+  proceso juntarPapeles(ES p:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      p:=p+1
+  fin
+  proceso depositarP(E cant:numero)
+  comenzar
+    repetir cant
+      si (HayPapelEnLaBolsa)
+        depositarPapel
+    Informar('deposite todos los papeles',cant)
+  fin
+areas
+  areaFloreros: AreaP(1,1,5,10)
+  areaPapeleros: AreaP(6,1,10,9)
+  areaDeposito:AreaC(10,10,10,10)
+  areaInicioF: AreaP(6,10,7,10)
+  areaInicioP: AreaP(8,10,9,10)
+robots
+  robot florero1
+  variables
+    avIni,caIni:numero
+    av,ca,f,cantF:numero
+    podes_depositar : boolean
+  comenzar
+    avIni:= PosAv
+    caIni:= PosCa
+    cantF:=0
+    repetir 5
+      Random(av,1,5)
+      Random(ca,1,10)
+      Pos(av,ca)
+      juntarFlores(f)
+      cantF := cantF + f
+      Pos(avIni,caIni)
+      EnviarMensaje(cantF,r2 ){ya junte toma las flores}
+      RecibirMensaje(f,r2) {recibo las flores del r2}
+    Pos(10,10)
+    depositarF(f)
+    Pos(avIni,caIni)
+    podes_depositar:= V
+    EnviarMensaje(podes_depositar,r2)
+  fin
+  robot florero2
+  variables
+    avIni,caIni:numero
+    av,ca,f,flores:numero
+    puedo_depositar: boolean
+  comenzar
+    flores:=0
+    repetir 5
+      RecibirMensaje(flores,r1)
+      avIni:= PosAv
+      caIni:= PosCa
+      Random(av,1,5)
+      Random(ca,1,10)
+      Pos(av,ca)
+      juntarFlores(f)
+      flores := flores + f
+      Pos(avIni,caIni)
+      EnviarMensaje(flores,r1)
+    RecibirMensaje(puedo_depositar,r1)
+    Pos(10,10)
+    depositarF(flores)
+    Pos(avIni,caIni)
+    EnviarMensaje(V,r3)
+  fin
+  robot papelero1
+  variables
+    ok,podes_ir:boolean
+    avIni,caIni:numero
+    av,ca:numero
+    pap,cantP:numero
+  comenzar
+    RecibirMensaje(ok,r2)
+    si (ok = V)
+      avIni:= PosAv
+      caIni:= PosCa
+      repetir 3
+        Random(av,6,10)
+        Random(ca,1,9)
+        Pos(av,ca)
+        juntarPapeles(pap)
+        cantP := cantP + pap
+        Pos(avIni,caIni)
+        EnviarMensaje(cantP,r4){toma los papeles que junte}
+        RecibirMensaje(pap,r4){dame los papeles que juntaste}
+      Pos(10,10)
+      depositarP(pap)
+      Pos(avIni,caIni)
+      podes_ir:= V
+      EnviarMensaje(podes_ir,r4)
+  fin
+  robot papelero2
+  variables
+    avIni,caIni: numero
+    papeles,cant:numero
+    av,ca:numero
+    puedo_ir: boolean
+  comenzar
+    cant:=0
+    avIni:= PosAv
+    caIni:= PosCa
+    repetir 3
+      RecibirMensaje(papeles,r3)
+      Random(av,6,10)
+      Random(ca,1,9)
+      Pos(av,ca)
+      cant := cant + papeles
+      juntarPapeles(cant)
+      Pos(avIni,caIni)
+      EnviarMensaje(cant,r3)
+    RecibirMensaje(puedo_ir,r3)
+    Pos(10,10)
+    depositarP(cant)
+    Pos(avIni,caIni)
+  fin
+variables
+  r1:florero1
+  r2:florero2
+  r3:papelero1
+  r4:papelero2
+comenzar  
+  AsignarArea(r1,areaFloreros)
+  AsignarArea(r1,areaDeposito)
+  AsignarArea(r1,areaInicioF)
+  AsignarArea(r2,areaFloreros)
+  AsignarArea(r2,areaDeposito)
+  AsignarArea(r2,areaInicioF)
+  AsignarArea(r3,areaPapeleros)
+  AsignarArea(r3,areaDeposito)
+  AsignarArea(r3,areaInicioP)
+  AsignarArea(r4,areaPapeleros)
+  AsignarArea(r4,areaDeposito)
+  AsignarArea(r4,areaInicioP)
+  Iniciar(r1,6,10)
+  Iniciar(r2,7,10)
+  Iniciar(r3,8,10)
+  Iniciar(r4,9,10)
+fin

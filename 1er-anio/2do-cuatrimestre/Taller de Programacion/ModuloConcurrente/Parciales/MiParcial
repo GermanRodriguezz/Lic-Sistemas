@@ -1,0 +1,155 @@
+programa MiParcial
+procesos
+  proceso recorreF(E calle:numero; ES flores: numero)
+  variables
+    avAct,caAct : numero
+  comenzar
+    avAct:= PosAv
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores := flores + 1
+    repetir 99
+      caAct := PosCa
+      si (caAct+1 = calle)
+        BloquearEsquina(avAct,caAct+1)
+        mover
+        mientras (HayFlorEnLaEsquina)
+          tomarFlor
+          flores := flores + 1
+      sino
+        mover
+        mientras (HayFlorEnLaEsquina)
+          tomarFlor
+          flores := flores + 1
+      si (caAct -1 = calle)
+        LiberarEsquina(avAct,caAct-1)
+  fin
+  proceso recorreP(E calle:numero; ES papel: numero)
+  variables
+    avAct : numero
+  comenzar
+    derecha
+    Pos(2,calle)
+    repetir 99
+      avAct := PosAv
+      si ((avAct+1 = 6) | (avAct+1 = 11))
+        BloquearEsquina(avAct+1,calle)
+        mover
+        mientras (HayPapelEnLaEsquina)
+          tomarPapel
+          papel := papel + 1
+      sino
+        mientras (HayPapelEnLaEsquina)
+          tomarPapel
+          papel := papel +1
+        mover
+      si ((avAct -1 = 6) | (avAct-1 = 11))
+        LiberarEsquina(avAct-1,calle)
+  fin
+ 
+  proceso ActMax(E f1:numero; E f2:numero; E p:numero; ES id:numero)
+  variables
+    max:numero
+  comenzar
+    max:=0
+    si (f1> max)
+      max:= f1
+      id:= 1
+    si (f2> max)
+      max:= f2
+      id:= 2
+    si (p>max)
+      max:= p
+      id:= 3
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot florero
+  variables
+    id,f,AvIni,CaIni,calle:numero
+    gane:boolean
+  comenzar
+    RecibirMensaje(id,rf)
+    AvIni:= PosAv
+    CaIni:= PosCa
+    f:= 0
+    RecibirMensaje(calle,rf)
+    recorreF(calle,f)
+    EnviarMensaje(id,rf)
+    EnviarMensaje(f,rf)
+    RecibirMensaje(gane,rf)
+    si (gane = V)
+      Pos(AvIni,CaIni)
+  fin
+  robot papelero
+  variables
+    calle,id,AvIni,CaIni,p:numero
+    gane: boolean
+  comenzar
+    RecibirMensaje(id,rf)
+    p:=0
+    AvIni:= PosAv
+    CaIni:= PosCa
+    RecibirMensaje(calle,rf)
+    recorreP(calle,p)
+    EnviarMensaje(id,rf)
+    EnviarMensaje(p,rf)
+    RecibirMensaje(gane,rf)
+    si (gane = V)
+      Pos(AvIni,CaIni)
+  fin
+  robot fiscal
+  variables
+    id,idGanador,flores1,flores2,papel,calle:numero
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    Random(calle,2,20)
+    calle := 10
+    EnviarMensaje(calle,r3)
+    EnviarMensaje(calle,r1)
+    EnviarMensaje(calle,r2)
+    repetir 3
+      RecibirMensaje(id,*)
+      si (id = 1)
+        RecibirMensaje(flores1,r1)
+      sino
+        si (id = 2)
+          RecibirMensaje(flores2,r2)
+        sino
+          si (id = 3)
+            RecibirMensaje(papel,r3)
+    ActMax(flores1,flores2,papel,idGanador)
+    si (idGanador = 1)
+      EnviarMensaje(V,r1)
+      EnviarMensaje(F,r2)
+      EnviarMensaje(F,r3)
+    sino
+      si (idGanador = 2)
+        EnviarMensaje(V,r2)
+        EnviarMensaje(F,r1)
+        EnviarMensaje(F,r1)
+      sino
+        si (idGanador = 3)
+          EnviarMensaje(V,r3)
+          EnviarMensaje(F,r1)
+          EnviarMensaje(F,r2)
+    Informar('el que mas recolector fue',idGanador)
+  fin
+variables
+  r1: florero
+  r2: florero
+  r3: papelero
+  rf: fiscal
+comenzar
+  AsignarArea(rf, ciudad)
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r3, ciudad)
+  Iniciar(rf, 1,1)
+  Iniciar(r1, 6,1)
+  Iniciar(r2, 11,1)
+  Iniciar(r3, 2,1)
+fin

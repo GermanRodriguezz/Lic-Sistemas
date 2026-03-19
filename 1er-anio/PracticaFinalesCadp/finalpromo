@@ -1,0 +1,48 @@
+FINAL CADP PROMOCION
+/// PUNTO 1
+	a) falso, en la tecnica que se verifican los casos limites es el testing.
+	b) falso, el vector se usa teniendo en cuenta la dimension fisica.
+	c) falso, una funcion siempre devuelve un tipo de dato simple, de ese modo jamas puede devolver un registro.
+	d) falso, puede existir la comunicacion a traves de parametros por valor o referencia en el programa.
+/// PUNTO 2
+	1) read(c) invalido, no se puede realizar el read de un registro de esa manera, debe ser campo a campo.
+	2) new(c) valido, se reserva espacio en memoria dinamica para un registro.
+	3) read(cli) invalido, la lectura deberia ser a los campos de la lista, no a la lista directamente.
+	4) c := nil invalido, se le asigna nil a una variable que no es un puntero.
+	5) cli := nil valido, inicializa la lista en nulo. {consultar}
+	6) dispose(cli) valido, con el dispose hace que no se pueda volver a acceder a la direccion de memoria de esa variable.
+	7) read(cli^.codigo) invalido, esta accediendo de manera incorrecta al campo del registro que esta contenido en la lista. Deberia ser cli^.dato.codigo.
+	8) write(c.codigo) valido, es la manera en que se lee el valor de ese campo del registro.	
+/// PUNTO 3
+	estructura de datos vector: estructura indexada,homogenea,estatica, compuesta, definida por el programador. Es una coleccion de datos almacenados uno
+		al lado del otro con un indice que nos permite acceder al contenido de una posicion del arreglo.
+		
+			
+		
+/// PUNTO 4
+	memoria estatica : 21 + 4 + (10 * 4) + 12 + 21 
+						= 25 + 40 + 23 
+						= 48 + 40 
+						= 88 bytes
+						
+	tiempo de ejecucion : 3(N + 2) + N(cuerpo)  n = 11	cuerpo = 2 				
+						    3(13) + 11(2)
+						    39 + 22 = 61
+						  
+						  1ut
+						  
+						  C(N + 1) + N(cuerpo) n = -		cuerpo = 2
+							n +1 + 2n
+							3n + 1
+							
+			total = 61 + 1 + 3n + 1
+					(63 + 3N)ut
+/// PUNTO 5
+type puntero = ^char;
+var p: puntero
+	
+	¿En que se diferencian las sentencias p := nil	y new(p)?
+	
+		las diferencias son que al hacer un new de la variable p, se reserva espacio en memoria dinamica para almacenar ,en este caso, caracteres.
+		y con la sentencia p := nil lo que sucede en memoria dinamica es que se rompe el lazo con la direccion de memoria de esa variable, 
+		impidiendo el acceso a esa direccion de memoria con el contenido que haya.

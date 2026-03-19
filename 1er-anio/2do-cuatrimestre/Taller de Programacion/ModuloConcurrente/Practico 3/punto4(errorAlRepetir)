@@ -1,0 +1,94 @@
+programa ejemplo
+procesos
+  proceso bloqueos(E av:numero; E ca:numero; ES segui:boolean)
+  comenzar
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    si (HayFlorEnLaEsquina)
+      tomarFlor
+    sino
+      Pos(av,ca)
+      LiberarEsquina(10,10)
+      segui := F
+    BloquearEsquina(11,11)
+    Pos(11,11)
+    LiberarEsquina(10,10)
+    si (HayFlorEnLaBolsa)
+      depositarFlor
+    Pos(av,ca)
+    LiberarEsquina(11,11)
+  fin
+  proceso recolectar(ES f: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      f:= f + 1
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot recolector
+  variables
+    id,avIni,caIni:numero
+    puedo,termine:boolean
+  comenzar
+    RecibirMensaje(id,rc)
+    puedo:= V
+    avIni:= PosAv
+    caIni:= PosCa
+    mientras (puedo = V)
+      bloqueos(avIni,caIni,puedo)
+    EnviarMensaje(id,rc)
+    EnviarMensaje(termine,rc)
+  fin
+  robot coordinador
+  variables
+    fr,iden,ult:numero
+    termino:boolean
+  comenzar
+    fr:=0
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)  
+    EnviarMensaje(4,r4)
+    repetir 4
+      RecibirMensaje(iden,*)
+      si (iden = 1)
+        RecibirMensaje(termino,r1)
+        ult :=iden
+      sino
+        si (iden = 2)
+          RecibirMensaje(termino,r2)
+          ult := iden
+        sino
+          si (iden = 3 )
+            RecibirMensaje(termino,r3)
+            ult := iden
+          sino 
+            si (iden = 4)
+              RecibirMensaje(termino,r4)
+              ult:= iden
+    Informar('el ultimo que tomo flores fue',ult)
+    Pos(11,11)
+    recolectar(fr)
+    Pos(1,1)
+    Informar('recolecte todas las flores',fr)
+  fin
+variables
+  r1: recolector
+  r2: recolector
+  r3: recolector
+  r4: recolector
+  rc: coordinador
+comenzar
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r3, ciudad)
+  AsignarArea(r4, ciudad)
+  AsignarArea(rc, ciudad)
+  Iniciar(rc, 1,1)
+  Iniciar(r1,9,9)
+  Iniciar(r2,9,10)
+  Iniciar(r3,9,11)
+  Iniciar(r4,9,12)
+fin

@@ -1,0 +1,90 @@
+{Bienvenidos al entorno CMRE.
+Lo siguiente es un código de ejemplo que implementa un
+proceso que recibe un número de avenida como parámetro,
+se posiciona en esa avenida y la recorre.}
+
+programa ejemplo
+procesos
+  proceso cuadrado(E lado: numero;ES f: numero)
+  comenzar
+    repetir 2
+      repetir lado
+        mientras (HayFlorEnLaEsquina)
+          tomarFlor
+          f:= f + 1
+        mover
+      derecha
+      repetir lado
+        mientras (HayFlorEnLaEsquina)
+          tomarFlor
+          f:= f + 1
+        mover
+      derecha
+  fin
+areas
+  Punto: AreaPC (50,50,50,50)
+  areaR1: AreaP (1,1,6,26)
+  areaR2: AreaP (8,1,14,26)
+  areaR3: AreaP (15,1,21,26)
+  areaRC: AreaP (51,1,51,1)
+robots
+  robot recolector
+  variables
+    num,avIni,calleProx,id,f:numero
+    listo:boolean
+  comenzar
+    RecibirMensaje(id,rc)
+    f:= 0
+    repetir 5
+      Random(num,1,5)
+      avIni:= PosAv
+      calleProx:= PosCa + (num + 1)
+      cuadrado(num,f)
+      si (id = 1)
+        EnviarMensaje(V,r2)
+        EnviarMensaje(V,r3)
+        RecibirMensaje(listo,r2)
+        RecibirMensaje(listo,r3)
+      sino
+        si (id = 2)
+          EnviarMensaje(V,r1)
+          EnviarMensaje(V,r3)
+          RecibirMensaje(listo,r1)
+          RecibirMensaje(listo,r3)
+        sino
+          si (id = 3)
+            EnviarMensaje(V,r1)
+            EnviarMensaje(V,r2)
+            RecibirMensaje(listo,r1)
+            RecibirMensaje(listo,r2)
+      Pos(avIni,calleProx)
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    repetir f
+      depositarFlor
+    Pos(avIni,calleProx)
+  fin
+  robot coordinador
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+variables
+  rc: coordinador
+  r1: recolector
+  r2: recolector
+  r3: recolector
+comenzar
+  AsignarArea(rc, areaRC)
+  AsignarArea(r1,areaR1)
+  AsignarArea(r1,Punto)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r2,Punto)
+  AsignarArea(r3,areaR3)
+  AsignarArea(r3,Punto)
+  Iniciar(rc, 51,1)
+  Iniciar(r1,1,1)
+  Iniciar(r2,8,1)
+  Iniciar(r3,15,1)
+fin

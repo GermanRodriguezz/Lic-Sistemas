@@ -1,0 +1,169 @@
+programa ejemplo
+procesos
+  proceso etapa1(ES f: numero)
+  comenzar
+    repetir 10
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        f:= f + 1
+      mover
+    derecha
+    repetir 10
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        f:= f + 1
+      mover
+  fin
+  proceso etapa2(ES f: numero)
+  comenzar
+    repetir 9
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        f:= f + 1
+      mover
+    derecha
+    repetir 9
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        f:= f + 1
+      mover
+  fin
+areas
+  Punto: AreaPC (20,20,20,20)
+  areaEquipoA: AreaP(1,1,11,11)
+  areaEquipoB: AreaP(13,1,23,11)
+  areaFiscal: AreaP(30,1,30,1)
+robots
+  robot roboA1
+  variables
+    id,f,ultAv,ultCa:numero
+  comenzar
+    RecibirMensaje(id,rf)
+    etapa1(f)
+    ultAv:= PosAv
+    ultCa:= PosCa
+    BloquearEsquina(20,20)
+    Pos(20,20)
+    repetir f
+      depositarFlor
+    Pos(ultAv,ultCa){me voy }
+    LiberarEsquina(20,20){libero}
+    EnviarMensaje(V,r2){puede arrancar}
+    EnviarMensaje(id,rf){soy}
+    EnviarMensaje(f,rf){te mando mis flores}
+  fin
+  robot roboA2
+  variables
+    f,id,ultAv,ultCa:numero
+    puedo:boolean
+  comenzar
+    f:=0
+    RecibirMensaje(id,rf)
+    RecibirMensaje(puedo,r1)
+    repetir 2
+      derecha
+    etapa2(f)
+    ultAv:= PosAv
+    ultCa:= PosCa
+    BloquearEsquina(20,20)
+    Pos(20,20)
+    repetir f
+      depositarFlor
+    Pos(ultAv,ultCa)
+    LiberarEsquina(20,20)
+    EnviarMensaje(id,rf)
+    EnviarMensaje(f,rf)
+  fin
+  robot roboB1
+  variables
+    id,f,ultAv,ultCa:numero
+  comenzar
+    f:=0
+    RecibirMensaje(id,rf)
+    etapa1(f)
+    ultAv:= PosAv
+    ultCa:= PosCa
+    BloquearEsquina(20,20)
+    Pos(20,20)
+    repetir f
+      depositarFlor
+    Pos(ultAv,ultCa)
+    LiberarEsquina(20,20)
+    EnviarMensaje(V,r4)
+    EnviarMensaje(id,rf)
+    EnviarMensaje(f,rf)
+  fin
+  robot roboB2
+  variables
+    id,f,ultAv,ultCa:numero
+    puedo: boolean
+  comenzar
+    RecibirMensaje(id,rf)
+    RecibirMensaje(puedo,r3)
+    repetir 2
+      derecha
+    etapa2(f)
+    ultAv:= PosAv
+    ultCa:= PosCa
+    BloquearEsquina(20,20)
+    Pos(20,20)
+    repetir f
+      depositarFlor
+    Pos(ultAv,ultCa)
+    LiberarEsquina(20,20)
+    EnviarMensaje(id,rf)
+    EnviarMensaje(f,rf)
+  fin
+  robot fiscal
+  variables
+    id,FloresEquipoA,FloresEquipoB,flores:numero
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+    repetir 4
+      RecibirMensaje(id,*)
+      si (id = 1)
+        RecibirMensaje(flores,r1)
+        FloresEquipoA:= FloresEquipoA + flores
+      sino
+        si (id = 2)
+          RecibirMensaje(flores,r2)
+          FloresEquipoA:= FloresEquipoA + flores
+        sino
+          si (id = 3)
+            RecibirMensaje(flores,r3)
+            FloresEquipoB:= FloresEquipoB + flores
+          sino
+            si (id = 4)
+              RecibirMensaje(flores,r4)
+              FloresEquipoB:= FloresEquipoB + flores
+    si (FloresEquipoA > FloresEquipoB)
+      Informar('gano el equipo A con', FloresEquipoA)
+    sino
+      si (FloresEquipoA < FloresEquipoB)
+        Informar('gano el equipo B con', FloresEquipoB) 
+  fin
+variables
+  rf: fiscal
+  r1: roboA1
+  r2: roboA2
+  r3: roboB1
+  r4: roboB2
+comenzar
+  AsignarArea(rf, areaFiscal)
+  AsignarArea(r1,areaEquipoA)
+  AsignarArea(r1,Punto)
+  AsignarArea(r2,areaEquipoA)
+  AsignarArea(r2,Punto)
+  AsignarArea(r3,areaEquipoB)
+  AsignarArea(r3,Punto)
+  AsignarArea(r4,areaEquipoB)
+  AsignarArea(r4,Punto)
+  Iniciar(rf, 30,1)
+  Iniciar(r1,1,1)
+  Iniciar(r2,11,10)
+  Iniciar(r3,13,1)
+  Iniciar(r4,23,10)
+fin

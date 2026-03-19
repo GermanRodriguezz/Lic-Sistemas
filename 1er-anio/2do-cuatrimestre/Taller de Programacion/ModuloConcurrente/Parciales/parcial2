@@ -1,0 +1,101 @@
+programa ejemplo
+procesos
+  proceso Cuadrado(E num: numero;ES flores:numero)
+  comenzar
+    repetir 2
+      repetir num
+        mientras (HayFlorEnLaEsquina)
+          tomarFlor
+          flores:= flores + 1
+        mover
+      derecha
+      repetir num
+        mientras (HayFlorEnLaEsquina)
+          tomarFlor
+          flores:= flores + 1
+        mover
+      derecha
+  fin
+  proceso actMax(E cant:numero; ES max:numero;ES robMax:numero; E nRob:numero)
+  comenzar
+    si (cant > max)
+      max:= cant
+      robMax:= nRob
+  fin
+areas
+  Punto: AreaPC (50,50,50,50)
+  areaRC: AreaP (51,51,51,51)
+  areaR1: AreaP (1,1,5,17)
+  areaR2: AreaP (7,1,12,17)
+  areaR3: AreaP (14,1,19,17)
+robots
+  robot robotos
+  variables
+    id,f,num,cantCuadras,avIni,calleProx: numero
+  comenzar
+    si (PosAv = 1)
+      id := 1
+    sino
+      si (PosAv = 7)
+        id := 2
+      sino
+        si (PosAv = 14)
+          id:= 3
+    cantCuadras:= 0
+    repetir 3
+      f:= 0
+      Random(num,1,4)
+      avIni:= PosAv
+      calleProx:= PosCa + num + 1{calle donde comienzo el otro cuadrado}
+      Cuadrado(num,f)
+      cantCuadras := cantCuadras + (num * 4)
+      EnviarMensaje(id,rc)
+      EnviarMensaje(cantCuadras,rc)
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      repetir f
+        depositarFlor
+      Pos(avIni,calleProx)
+      LiberarEsquina(50,50)
+  fin
+  robot coordinador
+  variables
+    cantidadCuadras,cuadrasR1,cuadrasR2,cuadrasR3,maxRob,max,idRob:numero
+  comenzar
+    max:= 0
+    repetir 9
+      RecibirMensaje(idRob,*)
+      si (idRob = 1)
+        RecibirMensaje(cantidadCuadras,r1)
+        cuadrasR1:= cuadrasR1 + cantidadCuadras
+        actMax(cuadrasR1,max,maxRob,idRob)
+      sino
+        si (idRob = 2)
+          RecibirMensaje(cantidadCuadras,r2)
+          cuadrasR2:= cuadrasR2 + cantidadCuadras
+          actMax(cuadrasR2,max,maxRob,idRob)
+        sino
+          si (idRob = 3)
+            RecibirMensaje(cantidadCuadras,r3)
+            cuadrasR3:= cuadrasR3 + cantidadCuadras
+            actMax(cuadrasR3,max,maxRob,idRob)
+    Informar('el rob que hizo maximas cuadras fue',maxRob)
+  fin
+variables
+  rc: coordinador
+  r1: robotos
+  r2: robotos
+  r3: robotos
+comenzar
+  AsignarArea(rc,areaRC)
+  AsignarArea(r1,areaR1)
+  AsignarArea(r1,Punto)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r2,Punto)
+  AsignarArea(r3,areaR3)
+  AsignarArea(r3,Punto)
+  Iniciar(rc, 51,51)
+  Iniciar(r1,1,1)
+  Iniciar(r2,7,1)
+  Iniciar(r3,14,1)
+fin

@@ -1,0 +1,35 @@
+FINAL PROMO 2022
+/// PUNTO 1 
+Caracteristicas de estructura de datos lista y vector
+	Lista : estructura de datos lineal, definida por el programador, compuesta, es una coleccion de nodos, homogenea,dinamica y secuencial
+	Vector : estructura de datos indexada, definida por el programador, estatica,compuesta, coleccion de datos almacenados uno al lado del otro, homogenea
+/// PUNTO 2
+	falso. la utilizacion de lass variables globales sirve para la comunicacion de todo el programa, todos pueden usar las variables globales para comunicarse.
+	
+/// PUNTO 3
+	read(c) falso, la lectura de un registro debe ser campo a campo.
+	new(c) verdadero, reserva un espacio en memoria dinamica para un registro.
+	cli := nil verdadero, asigna nil a una variable de tipo puntero.
+	new(cli) verdadero, reserva espacio en memoria dinamica para una direccion de memoria.
+	cli_esp := cli verdadero, son del mismo tipo y la asignacion es valida, le asigna al puntero cli_esp lo mismo que contiene la variable cli.
+	dispose(cli) verdadero, libera espacio en memoria de una variable de tipo puntero.
+	read(cli_esp^.dni) falso, la manera correcta de realizar la lectura es cli_esp^.dato.DNI 
+	write(cli_esp^.dni) falso, al igual que la lectura, la manera correcta de realizar la escritura es cli_esp^.dato.DNI.
+/// PUNTO 4 
+	formas de comunicacion entre modulos vistos
+	variables globales : son variables declaradas por encima de type que pueden ser usadas y modificadas por todo el programa, 
+	desde los modulos hasta el programa principal
+	parametros por valor: son una copia de la variable, el modulo puede usarlas pero no puede modificarlas ya que son copias.
+	parametros por refencia: son la direccion de memoria de la variable, el modulo puede usarla y puede modificar el valor del contenido
+	de esa direccion de memoria.
+/// PUNTO 5
+	memoria estatica : 868
+	memoria dinamica : 430 - 215 = 215
+	tiempo de ejecucion : 3(N + 2) + N(cuerpo)  n = 10 cuerpo = 3
+						  3 (12) + 10 (3)
+						  36 + 30 = 66ut
+						  3(5+2) + 5(0)
+						  3(7) + 0 = 21
+						  
+						  66 + 21 = 87ut
+							

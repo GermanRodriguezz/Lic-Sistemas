@@ -1,0 +1,22 @@
+# Java
+*.class
+*.jar
+
+# Binarios
+*.exe
+*.o
+
+# JDKs
+openjdk*
+jdk*
+
+# ZIPs
+*.zip
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store

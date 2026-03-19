@@ -1,0 +1,122 @@
+programa ejemplo
+procesos
+  proceso actualizarMax(E num:numero;E cant: numero;ES max:numero; ES robmax:numero)
+  comenzar
+    si (cant>max)
+      max := cant
+      robmax := num
+  fin
+areas
+  ciudad: AreaC (2,2,10,10)
+  areaInicio: AreaP (1,1,5,1)
+robots
+  robot rob
+  variables
+    av,ca,avIni,caIni,f,id:numero
+    tieneF: boolean
+  comenzar
+    RecibirMensaje(id,rj)
+    EnviarMensaje(id,rj)
+    RecibirMensaje(av,rj)
+    RecibirMensaje(ca,rj)
+    avIni:= PosAv
+    caIni:= PosCa
+    Pos(av,ca)
+    si (HayFlorEnLaEsquina)
+      tieneF:= V
+      EnviarMensaje(tieneF,rj)
+      tomarFlor
+      f:= f + 1
+      EnviarMensaje(f,rj)
+    sino
+      tieneF:=F
+      EnviarMensaje(tieneF,rj)
+    Pos(avIni,caIni)
+  fin
+  robot jefe
+  variables
+    max,ca,av,robo,f,cantr1,cantr2,cantr3,cantr4,rm:numero
+    tiene: boolean
+  comenzar
+    max := 0
+    f:= 0
+    cantr1:= 0
+    cantr2:= 0
+    cantr3:= 0  
+    cantr4:= 0
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+    Random(av,2,10)
+    Random(ca,2,10)
+    repetir 4
+      RecibirMensaje(robo,*)
+      Informar('recibi al robo',robo)
+      si (robo = 1)
+        EnviarMensaje(av,r1)
+        EnviarMensaje(ca,r1)
+        RecibirMensaje(tiene,r1)
+        si (tiene = V)
+          RecibirMensaje(f,r1)
+          cantr1:= cantr1 + f
+          actualizarMax(1,cantr1,max,rm)
+        sino
+          Informar('no hay mas flores',tiene)
+      sino
+        si (robo = 2)
+          EnviarMensaje(av,r2)
+          EnviarMensaje(ca,r2)
+          RecibirMensaje(tiene,r2)
+          si (tiene = V)
+            RecibirMensaje(f,r2)
+            cantr2:= cantr2 + f
+            actualizarMax(2,cantr2,max,rm)
+          sino
+            Informar('no hay mas flores',tiene)
+        sino
+          si(robo = 3)
+            EnviarMensaje(av,r3)
+            EnviarMensaje(ca,r3)
+            RecibirMensaje(tiene,r3)
+            si (tiene = V)
+              RecibirMensaje(f,r3)
+              cantr3:= cantr3 + f
+              actualizarMax(3,cantr3,max,rm)
+            sino
+              Informar('no hay mas flores',tiene)
+          sino
+            si (robo = 4)
+              EnviarMensaje(av,r4)
+              EnviarMensaje(ca,r4)
+              RecibirMensaje(tiene,r4)
+              si (tiene = V)
+                RecibirMensaje(f,r4)
+                cantr4:= cantr4 + f
+                actualizarMax(4,cantr4,max,rm)
+              sino
+                Informar('no hay mas flores',tiene)
+    Informar(max)
+  fin
+variables
+  r1: rob
+  r2: rob
+  r3: rob
+  r4: rob
+  rj: jefe
+comenzar
+  AsignarArea(r1, ciudad)
+  AsignarArea(r1, areaInicio)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r2, areaInicio)
+  AsignarArea(r3, ciudad)
+  AsignarArea(r3, areaInicio)
+  AsignarArea(r4, ciudad)
+  AsignarArea(r4, areaInicio)
+  AsignarArea(rj, areaInicio)
+  Iniciar(rj, 1,1)
+  Iniciar(r1,2,1)
+  Iniciar(r2,3,1)
+  Iniciar(r3,4,1)
+  Iniciar(r4,5,1)
+fin

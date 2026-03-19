@@ -1,0 +1,116 @@
+/// PUNTO 1
+	program final
+	type
+	rango = 1..12;
+		publicacion = record
+			titulo: string;
+			nombreautor: string;
+			dniautor: integer;
+			tipopubli: rango
+		end;
+	lista : ^nodo;
+	nodo = record
+		dato : publicacion;}
+		sig : lista;
+	end;
+	
+	vector = array [rango] of integer;
+	
+	procedure leer(var p:publicacion);
+	begin
+		readln(p.dniautor);
+		if (p.dniautor <> 0) then begin
+			readln(p.titulo);
+			readln(p.nombreautor);
+			readln(p.tipopubli);
+		end;
+	end;
+	
+	procedure insertar(var l:lista; p: publicacion);
+	var nue,act,ant:lista;
+	begin
+		new(nue);
+		nue^.dato := p;
+		nue^.sig := nil;
+		if (l = nil) then
+			l := nue
+		else begin
+			act := l;
+			while (act <> nil) and (p.dniautor < act^.dato.dniautor) do begin
+				ant := act;
+				act := act^.sig;
+			end;
+			if (act = l) then begin
+				nue^.sig := l;
+				l := nue;
+			end
+			else
+				ant^.sig :=  nue;
+			nue^.sig := act;
+		end;
+	end;
+	
+	procedure cargarLista(var l:lista; var v:vector);
+	var p:publi;
+	begin
+		leer(p);
+		while (p.dniautor <> 0) do begin
+			insertar(l,p);
+			v[p.tipopubli] := v[p.tipopubli] + 1;
+			leer(p);
+		end;
+	end;
+	
+	procedure recorrer(l:lista);
+	var cant,act:integer;
+	begin
+		while (l <> nil) do begin
+			act := l^.dato.dniautor;
+			while(l <> nil) and (act = l^.dato.dniautor) do begin
+				cant: cant + 1;
+				l := l^.sig;
+			end;
+			writeln('la cantidad de publicaciones del autor ', act , ' son ', cant);
+		end;
+	end;
+	
+	procedure maxtipo(v:vector; var tipo:integer);
+	var
+		max: integer;
+	begin
+		max := -1;
+		for i := 1 to 12 do begin
+			if (v[i] < max) then begin
+				max := v[i];
+				tipo := i;
+			end;
+		end;
+	end;
+	
+	var
+		l : lista; v:vector; tipo :integer;
+	begin
+	l := nil;
+	cargarLista(l,vec);
+	recorrer(l);
+	maxtipo(v,tipo);
+	writeln('el tipo de publicacion con mas presentaciones es ',tipo);
+	end;
+	
+/// PUNTO 2
+	memoria estatica: l:= 520 + 48 + 4 = 572
+/// PUNTO 3
+	1 writeln - null , 80 , 30
+	2 writeln - 0 , 110 , 10
+/// PUNTO 4
+	definir tipo de dato arreglo: estructura de datos indexada, compuesta, estatica homogenea , es una coleccion de datos almacenados uno del lado del otro
+		un indice nos permite acceder al contenido de una posicion.
+	pasos para realizar la busqueda de un elemento en un arreglo ordenado : se debe realizar el recorrido con un while con las condiciones de que el dato a buscar
+	sea menor/mayor al contenido de la posicion del vector, y la otra condicion sera que la posicion siguiente no sea mayor a la dimension fisica del arreglo
+	y por ultimo verificar porque sali del while, si se termino el vector o  porque puede que haya encontrado el valor a buscar.
+	
+	insertar un elemento en una posicion determinada
+		en las condiciones debo chequear que haya espacio en el arreglo, ademas que la posicion determinada sea valida. Luego hacer los corrimientos necesarios para 
+			insertar el elemento en esa posicion si es que se cumplen las condiciones, y por ultimo aumentar la dimesion logica del arreglo ya que se cumplieron
+			las condiciones
+/// PUNTO 5

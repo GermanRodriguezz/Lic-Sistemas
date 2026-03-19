@@ -1,0 +1,99 @@
+programa ejemplo
+procesos
+  proceso juntar(ES p: numero;ES hay:boolean)
+  comenzar
+    si (HayPapelEnLaEsquina)
+      tomarPapel
+      p:= p + 1
+    sino
+      hay := F
+  fin
+  proceso depositar(E p:numero)
+  comenzar
+    si (HayPapelEnLaBolsa)
+      depositarPapel
+  fin
+  proceso actualizarMax(E pos:numero;E NR:numero;ES maxPos:numero; ES RM:numero)
+  comenzar
+    si (pos > maxPos)
+      maxPos:= pos
+      RM:= NR
+  fin
+areas
+  Area1: AreaP (4,1,4,100)
+  Area2: AreaP (6,1,6,100)
+  Area3: AreaP (8,1,8,100)
+  Area4: AreaP (10,1,10,100)
+  AreaCor: AreaP(12,12,12,12)
+  Fuente: AreaPC (11,11,11,11)
+robots
+  robot corredor
+  variables
+    haypapel:boolean
+    avActual,caActual,p,num:numero
+  comenzar
+    RecibirMensaje(num,rc)
+    p:=0
+    haypapel:= V
+    mientras(haypapel = V) & (PosCa+1 <= 100)
+      avActual:= PosAv
+      caActual:= PosCa
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      juntar(p,haypapel)
+      Pos(avActual,caActual)
+      LiberarEsquina(11,11)
+      depositar(p)
+      Pos(avActual,caActual+1)
+    EnviarMensaje(num,rc)
+    EnviarMensaje(caActual,rc)
+  fin
+  robot coordinador
+  variables
+    posRob,maxP,quien,quienMax:numero
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3) 
+    EnviarMensaje(4,r4)
+    maxP:= 0
+    repetir 4
+      RecibirMensaje(quien,*)
+      si(quien = 1)
+        RecibirMensaje(posRob,r1)
+        actualizarMax(posRob,quien,maxP,quienMax)
+      sino
+        si (quien = 2)
+          RecibirMensaje(posRob,r2)
+          actualizarMax(posRob,quien,maxP,quienMax)
+        sino
+          si(quien = 3)
+            RecibirMensaje(posRob,r3)
+            actualizarMax(posRob,quien,maxP,quienMax)
+          sino
+            RecibirMensaje(posRob,r4)
+            actualizarMax(posRob,quien,maxP,quienMax)
+    Informar('el r que llego mas lejos fue',quienMax)
+  fin
+variables
+  r1: corredor
+  r2: corredor
+  r3: corredor 
+  r4: corredor
+  rc: coordinador
+comenzar
+  AsignarArea(r1, Area1)
+  AsignarArea(r1,Fuente)
+  AsignarArea(r2, Area2)
+  AsignarArea(r2,Fuente)
+  AsignarArea(r3, Area3)
+  AsignarArea(r3,Fuente)
+  AsignarArea(r4, Area4)
+  AsignarArea(r4,Fuente)
+  AsignarArea(rc, AreaCor)
+  Iniciar(r1, 4,1)
+  Iniciar(r2, 6,1)
+  Iniciar(r3, 8,1)
+  Iniciar(r4, 10,1)
+  Iniciar(rc, 12,12)
+fin

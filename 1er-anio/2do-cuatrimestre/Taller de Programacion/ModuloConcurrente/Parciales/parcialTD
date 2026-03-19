@@ -1,0 +1,137 @@
+programa ejemplo
+procesos
+  proceso depositarP(ES p: numero)
+  comenzar
+    si ~(HayPapelEnLaEsquina)
+      si (HayPapelEnLaBolsa)
+        depositarPapel
+        p := p + 1
+  fin
+  proceso depositarF(ES f: numero)
+  comenzar
+    si ~(HayFlorEnLaEsquina)
+      si (HayFlorEnLaBolsa)
+        depositarFlor
+        f := f +1
+  fin
+  proceso recorrerP(E av:numero; ES papeles:numero)
+  variables
+    x,y:numero
+  comenzar
+    derecha
+    repetir 99
+      x := PosAv
+      y := PosCa
+      si (x+1 = av)
+        BloquearEsquina(x+1,y)
+      sino
+        si (x-1 = av)
+          LiberarEsquina(x-1,y)
+      depositarP(papeles)
+      mover
+    depositarP(papeles)
+  fin
+  proceso recorrerF(E av:numero; ES flores:numero)
+  variables
+    x,y,cant:numero
+  comenzar
+    cant := 100 - (av+1)
+    repetir cant
+      x := PosAv
+      y := PosCa
+      si (y+1 = av)
+        BloquearEsquina(x,y+1)
+      sino
+        si (y > av)
+          LiberarEsquina(x,y-1)
+      depositarF(flores)
+      mover
+    depositarF(flores)
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot sembradorPapelero
+  variables
+    id,av,avIni,caIni,papeles:numero
+    gano:boolean
+  comenzar
+    RecibirMensaje(id,rf)
+    RecibirMensaje(av,rf)
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+    avIni := PosAv
+    caIni := PosCa
+    recorrerP(av,papeles)
+    EnviarMensaje(id,rf)
+    RecibirMensaje(gano,rf)
+    si (gano = V)
+      EnviarMensaje(papeles,rf)
+      Pos(avIni,caIni)
+  fin
+  robot sembradorFlorero
+  variables
+    id,av,avIni,caIni,flores: numero
+    gane : boolean
+  comenzar
+    RecibirMensaje(id,rf)
+    RecibirMensaje(av,rf)
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+    avIni := PosAv
+    caIni := PosCa
+    Pos(av,caIni)
+    recorrerF(av,flores)
+    EnviarMensaje(id,rf)
+    RecibirMensaje(gane,rf)
+    si (gane = V)
+      EnviarMensaje(flores,rf)
+      Pos(avIni,caIni)
+  fin
+  robot fiscal
+  variables
+    ca,elem,id:numero
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    Random(ca,2,35)
+    EnviarMensaje(ca,r1)
+    EnviarMensaje(ca,r2)
+    EnviarMensaje(ca,r3)
+    RecibirMensaje(id,*)
+    si (id = 1)
+      EnviarMensaje(V,r1)
+      EnviarMensaje(F,r2)
+      EnviarMensaje(F,r3)
+      RecibirMensaje(elem,r1)
+      Informar('el rob1 deposito estos papeles ',elem)
+    sino
+      si (id = 2)
+        EnviarMensaje(V,r2)
+        EnviarMensaje(F,r1)
+        EnviarMensaje(F,r3)
+        RecibirMensaje(elem,r2)
+        Informar('el rob2 deposito estos papeles ',elem)
+      sino
+        EnviarMensaje(V,r3)
+        EnviarMensaje(F,r1)
+        EnviarMensaje(F,r2)
+        RecibirMensaje(elem,r3)
+        Informar('el rob3 deposito estas flores ',elem)
+  fin
+variables
+  r1: sembradorPapelero
+  r2: sembradorPapelero
+  r3: sembradorFlorero
+  rf: fiscal
+comenzar
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r3, ciudad)
+  AsignarArea(rf, ciudad)
+  Iniciar(rf, 1,1)
+  Iniciar(r1, 1,8)
+  Iniciar(r2, 1,15)
+  Iniciar(r3, 1,2)
+fin

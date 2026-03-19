@@ -1,0 +1,81 @@
+programa ejemplo
+procesos
+  proceso juntarF(ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores := flores + 1
+  fin
+  proceso juntarP(ES papeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles + 1
+  fin
+  proceso escalon(E ancho:numero; E altura:numero; ES f:numero; ES p:numero)
+  comenzar
+    repetir altura
+      juntarF(f)
+      juntarP(p)
+      mover
+    derecha
+    repetir ancho
+      juntarF(f)
+      juntarP(p)
+      mover
+    repetir 3
+      derecha
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot TipoRobot
+  variables
+    altura:numero
+    flores:numero
+    papeles:numero
+    cant:numero
+  comenzar
+    cant:=0
+    flores:=0
+    papeles:=0
+    repetir 4
+      RecibirMensaje(altura,RJ)
+      escalon(1,altura,flores,papeles)
+      si (flores > papeles)
+        cant := cant + 1
+    EnviarMensaje(cant,RJ)
+  fin
+  robot TipoJefe
+  variables
+    altura:numero
+    c:numero
+    cantidadEscalones:numero
+  comenzar
+    cantidadEscalones := 0
+    altura := 1
+    repetir 4
+      EnviarMensaje(altura,R1)
+      EnviarMensaje(altura,R2)
+      EnviarMensaje(altura,R3)
+      altura := altura + 1
+    repetir 3
+      RecibirMensaje(c,*)
+      cantidadEscalones := cantidadEscalones + c
+    Informar('la cantidad total de escalones es', cantidadEscalones)
+  fin
+variables
+  R1: TipoRobot
+  R2 : TipoRobot
+  R3: TipoRobot
+  RJ: TipoJefe
+comenzar
+  AsignarArea(RJ, ciudad)
+  AsignarArea(R1, ciudad)
+  AsignarArea(R2, ciudad)
+  AsignarArea(R3, ciudad)
+  Iniciar(RJ, 1,1)
+  Iniciar(R1,2,1)
+  Iniciar(R2,7,1)
+  Iniciar(R3,12,1)
+fin

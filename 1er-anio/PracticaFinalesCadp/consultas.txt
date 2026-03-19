@@ -1,0 +1,12 @@
+en el agregar adelante verificar el ULT, si la lista esta vacia debemos hacer 
+	l := nue;
+	ult := l;
+
+
+
+cuando una variable declarada no es de tipo vector y es declarada como vector, el problema es que no puedo pasarla como parámetro luego.
+
+
+el case funciona con datos simples-ORDINALES
+
+siempre que tenga que agregar datos al final de una lista de la cual dispongo, es correcto que me guarde el ULT, para no recorrer denuevo la lista y tener el puntero al ultimo.

@@ -1,0 +1,113 @@
+programa ejemplo
+procesos
+  proceso pedir(ES num: numero; E id:numero)
+  comenzar
+    EnviarMensaje(id,rs)
+    RecibirMensaje(num,rs)
+  fin
+  proceso cuadrado(E lado:numero; ES f:numero)
+  comenzar
+    repetir 2
+      repetir lado
+        mientras (HayFlorEnLaEsquina)
+          tomarFlor
+          f:= f + 1
+        mover
+      derecha
+      repetir lado
+        mientras (HayFlorEnLaEsquina)
+          tomarFlor
+          f:= f + 1
+        mover
+      derecha
+  fin
+  proceso depositar (E cantF:numero;E av:numero; E ca:numero)
+  comenzar
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    repetir cantF
+      depositarFlor
+    Pos(av,ca)
+    LiberarEsquina(50,50)
+  fin
+  proceso buscar(E av:numero; E ca:numero; ES f:numero)
+  comenzar
+    Pos(50,50)
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      f:= f + 1
+    Pos(av,ca)
+  fin
+areas
+  Punto: AreaC (50,50,50,50)
+  areaR1: AreaP (1,1,6,16)
+  areaR2: AreaP (8,1,13,16)
+  areaR3: AreaP (15,1,20,16)
+  areaRS: AreaP (22,1,22,1)
+robots
+  robot cliente
+  variables
+    id,f,num,x,y,ProxCa:numero
+  comenzar
+    si (PosAv = 1)
+      id:= 1
+    sino
+      si (PosAv = 8)
+        id:= 2
+      sino
+        si (PosAv = 15)
+          id := 3
+    x:= PosAv
+    y:= PosCa
+    f:= 0
+    repetir 3
+      pedir(num,id)
+      ProxCa:= PosCa + (num + 1)
+      cuadrado(num,f)
+      Pos(x,ProxCa)
+    depositar(f,x,y)
+    EnviarMensaje(V,rs)
+  fin
+  robot servidor
+  variables
+    id,num,av,ca,flores:numero
+    termino: boolean
+  comenzar
+    repetir 9
+      Random(num,1,5)
+      RecibirMensaje(id,*)
+      si (id = 1)
+        EnviarMensaje(num,r1)
+      sino
+        si (id = 2)
+          EnviarMensaje(num,r2)
+        sino
+          si (id = 3)
+            EnviarMensaje(num,r3)
+    repetir 3
+      RecibirMensaje(termino,*)
+    av:= PosAv
+    ca:= PosCa
+    flores:=0
+    buscar(av,ca,flores)
+    Informar('tomo la cantidad',flores)
+  fin
+variables
+  rs: servidor
+  r1: cliente
+  r2: cliente
+  r3: cliente
+comenzar
+  AsignarArea(rs, Punto)
+  AsignarArea(r1, Punto)
+  AsignarArea(r2, Punto)
+  AsignarArea(r3, Punto)
+  AsignarArea(rs, areaRS)
+  AsignarArea(r1, areaR1)
+  AsignarArea(r2, areaR2)
+  AsignarArea(r3, areaR3)
+  Iniciar(rs, 22,1)
+  Iniciar(r1, 1,1)
+  Iniciar(r2, 8,1)
+  Iniciar(r3, 15,1)
+fin

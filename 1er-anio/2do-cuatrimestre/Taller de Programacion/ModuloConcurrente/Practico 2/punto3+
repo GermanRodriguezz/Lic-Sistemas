@@ -1,0 +1,89 @@
+programa Prac2ejer3
+procesos 
+  proceso juntarpapeles(ES papeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles := papeles  + 1
+  fin
+  proceso juntarflores(ES flores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores:=flores + 1
+  fin
+  proceso recorrerA(E cant:numero; ES papeles:numero)
+  comenzar 
+    repetir cant 
+      juntarpapeles(papeles)
+      mover
+    juntarpapeles(papeles)
+  fin
+  proceso recorrerB(E cant:numero; ES flores:numero)
+  comenzar
+    repetir cant
+      juntarflores(flores)
+      mover
+    juntarflores(flores)
+  fin
+areas 
+  ciudadA: AreaP(1,1,10,1)
+  ciudadB: AreaP(11,1,20,1)
+  ciudadC: AreaP(1,5,10,5)
+  ciudadD: AreaP(11,5,20,5)
+robots 
+  robot t1
+  variables
+    papeles:numero
+  comenzar
+    papeles:=0
+    derecha
+    recorrerA(9,papeles)
+    EnviarMensaje(papeles,robot2)
+  fin 
+  robot t2
+  variables 
+    papeles2,cant:numero
+  comenzar 
+    papeles2:=0
+    derecha
+    RecibirMensaje(cant,robot1)
+    papeles2:=papeles2 + cant
+    recorrerA(9,papeles2)
+    Informar('la cantidad de papeles del equipoA son', papeles2)
+  fin 
+  robot t3
+  variables
+    flores:numero
+  comenzar
+    flores:=0
+    derecha
+    recorrerB(9,flores)
+    EnviarMensaje(flores,robot4)
+  fin
+  robot t4
+  variables
+    flores:numero
+    cant:numero
+  comenzar
+    derecha
+    RecibirMensaje(flores,robot3)
+    cant := cant + flores
+    recorrerB(9,cant)
+    Informar('la cantidad de flores del equipoB es',cant)
+  fin
+variables 
+  robot1:t1
+  robot2:t2
+  robot3:t3
+  robot4:t4
+comenzar
+  AsignarArea(robot1,ciudadA)
+  AsignarArea(robot2,ciudadB)
+  AsignarArea(robot3,ciudadC)
+  AsignarArea(robot4,ciudadD)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,11,1)
+  Iniciar(robot3,1,5)
+  Iniciar(robot4,11,5)
+fin 

@@ -1,0 +1,106 @@
+programa ejemplo
+procesos
+  proceso buscarFlores(ES f: numero)
+  variables
+    x,y:numero
+  comenzar
+    x:= PosAv
+    y:= PosCa
+    Pos(10, 10)
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      f:= f + 1
+    Pos(x,y)
+    Informar('ya tome las flores',f)
+  fin
+areas
+  Punto: AreaC (10,10,10,10)
+  areaJefe: AreaP (4,1,4,1)
+  areaR1: AreaP(1,1,1,1)
+  areaR2: AreaP(2,1,2,1)
+  areaR3: AreaP(3,1,3,1)
+  areaFloreros: AreaPC (40,40,60,60)
+robots
+  robot florero
+  variables
+    intentoN,av,ca,x,y:numero
+  comenzar
+    RecibirMensaje(intentoN,rj)
+    x:= PosAv
+    y:= PosCa
+    mientras (intentoN <> 9)
+      RecibirMensaje(av,rj)
+      RecibirMensaje(ca,rj)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+      Pos(x,y)
+      LiberarEsquina(av,ca)
+      RecibirMensaje(intentoN,rj)
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    mientras (HayFlorEnLaBolsa)
+      depositarFlor
+    Pos(x,y)
+    Informar('ya deposite y volvi a',x,y)
+    LiberarEsquina(10,10)
+    EnviarMensaje(V,rj)
+  fin
+  robot jefe
+  variables
+    int,Av,Ca,FloresTotales,NumRob:numero
+    depositaron: boolean
+  comenzar
+    int := 0
+    repetir 8
+      int:= int + 1
+      Random(NumRob,1,3)
+      Informar('se genero el rob',NumRob)
+      Random(Av,40,60)
+      Random(Ca,40,60)
+      Informar('se genero la esquina',Av,Ca)
+      si (NumRob = 1)
+        EnviarMensaje(int,r1)
+        EnviarMensaje(Av,r1)
+        EnviarMensaje(Ca,r1)
+      sino
+        si (NumRob = 2)
+          EnviarMensaje(int,r2)
+          EnviarMensaje(Av,r2)
+          EnviarMensaje(Ca,r2)
+        sino
+          si (NumRob = 3)
+            EnviarMensaje(int,r3)
+            EnviarMensaje(Av,r3)
+            EnviarMensaje(Ca,r3)
+    EnviarMensaje(9,r1)
+    EnviarMensaje(9,r2)
+    EnviarMensaje(9,r3)
+    repetir 3
+      RecibirMensaje(depositaron,*)
+    buscarFlores(FloresTotales) 
+    Informar('Los robs juntaros', FloresTotales)
+  fin
+variables
+  rj: jefe
+  r1: florero
+  r2: florero
+  r3: florero
+comenzar
+  AsignarArea(rj, areaJefe)
+  AsignarArea(rj,Punto)
+  AsignarArea(r1,areaR1)
+  AsignarArea(r1,areaFloreros)
+  AsignarArea(r1,Punto)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r2,areaFloreros)
+  AsignarArea(r2,Punto)
+  AsignarArea(r3,areaR3)
+  AsignarArea(r3,areaFloreros)
+  AsignarArea(r3,Punto)
+  Iniciar(rj, 4,1)
+  Iniciar(r1, 1,1)
+  Iniciar(r2, 2,1)
+  Iniciar(r3, 3,1)
+fin

@@ -1,0 +1,181 @@
+programa ejemplo
+procesos
+  proceso escalonF(ES f: numero)
+  comenzar
+    repetir 4
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        f := f +1
+      mover
+    derecha
+    repetir 3
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        f := f + 1
+      mover
+  fin
+  proceso depositarF
+  variables
+    x,y: numero
+  comenzar
+    x := PosAv
+    y := PosCa
+    BloquearEsquina(99,99)
+    Pos(99,99)
+    si (HayFlorEnLaBolsa)
+      depositarFlor
+    Pos(x,y)
+    LiberarEsquina(99,99)
+  fin
+  proceso depositarP
+  variables
+    x,y: numero
+  comenzar
+    x := PosAv
+    y := PosCa
+    BloquearEsquina(98,98)
+    Pos(98,98)
+    si (HayPapelEnLaBolsa)
+      depositarPapel
+    Pos(x,y)
+    LiberarEsquina(98,98)
+  fin
+  proceso escalonP(ES p:numero)
+  comenzar
+    repetir 4
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel
+        p := p + 1
+      mover
+    derecha
+    repetir 3
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel
+        p := p + 1
+      mover
+  fin
+  proceso buscarFlores
+  variables
+    x,y: numero
+  comenzar
+    x := PosAv
+    y := PosCa
+    BloquearEsquina(99,99)
+    Pos(99,99)
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+    Pos(x,y)
+    LiberarEsquina(99,99)
+  fin
+  proceso buscarPapeles
+  variables
+    x,y: numero
+  comenzar
+    x := PosAv
+    y := PosCa
+    BloquearEsquina(98,98)
+    Pos(98,98)
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+    Pos(x,y)
+    LiberarEsquina(98,98)
+  fin
+areas
+  arear1: AreaP (2,1,11,13)
+  arear2: AreaP (32,1,41,13)
+  arear3: AreaP (62,1,71,13)
+  punto1: AreaC (99,99,99,99)
+  punto2: AreaC (98,98,98,98)
+  areaf: AreaP (1,1,1,1)
+robots
+  robot escalonero
+  variables
+    id,tarea,flores,f,papeles,p: numero
+  comenzar
+    flores := 0
+    papeles := 0
+    repetir 3
+      RecibirMensaje(tarea,rf)
+      si (tarea = 1)
+        f := 0
+        escalonF(f)
+        flores := flores + f
+      sino
+        p := 0
+        escalonP(p)
+        papeles  := papeles + p
+      repetir 3
+        derecha
+    repetir flores
+      depositarF
+    repetir papeles
+      depositarP
+    EnviarMensaje(id,rf)
+    EnviarMensaje(flores,rf)
+    EnviarMensaje(papeles,rf)
+    EnviarMensaje(V,rf)
+  fin
+  robot fiscal
+  variables
+    id,tarea,cantPapeles,cantFlores,flores,papeles:numero
+    t: boolean
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    repetir 3
+      Random(tarea,1,2)
+      EnviarMensaje(tarea,r1)
+      Random(tarea,1,2)
+      EnviarMensaje(tarea,r2)
+      Random(tarea,1,2)
+      EnviarMensaje(tarea,r3)
+    repetir 3
+      RecibirMensaje(id,*)
+      si (id = 1)
+        RecibirMensaje(flores,r1)
+        cantFlores := cantFlores + flores
+        RecibirMensaje(papeles,r1)
+        cantPapeles := cantPapeles + papeles
+      sino
+        si (id = 2)
+          RecibirMensaje(flores,r2)
+          cantFlores := cantFlores + flores
+          RecibirMensaje(papeles,r2)
+          cantPapeles := cantPapeles + papeles
+        sino
+          si (id = 3)
+            RecibirMensaje(flores,r3)
+            cantFlores := cantFlores + flores
+            RecibirMensaje(papeles,r2)
+            cantPapeles := cantPapeles + papeles
+    repetir 3
+      RecibirMensaje(t,*)
+    si (cantFlores < cantPapeles)
+      buscarFlores
+    sino
+      buscarPapeles
+  fin
+variables
+  r1: escalonero
+  r2: escalonero
+  r3: escalonero
+  rf: fiscal
+comenzar
+  AsignarArea(rf, areaf)
+  AsignarArea(rf,punto1)
+  AsignarArea(rf,punto2)
+  AsignarArea(r1,arear1)
+  AsignarArea(r1,punto1)
+  AsignarArea(r1,punto2)
+  AsignarArea(r2,arear2)
+  AsignarArea(r2,punto1)
+  AsignarArea(r2,punto2)
+  AsignarArea(r3,arear3)
+  AsignarArea(r3,punto1)
+  AsignarArea(r3,punto2)
+  Iniciar(rf, 1,1)
+  Iniciar(r1,2,1)
+  Iniciar(r2,32,1)
+  Iniciar(r3,62,1)
+fin

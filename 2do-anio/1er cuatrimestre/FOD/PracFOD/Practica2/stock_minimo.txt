@@ -1,0 +1,3 @@
+Codigo = 1 NombreComercial=  Pepitos stockActual= 15 stockMinimo = 20
+Codigo = 2 NombreComercial=  Oreos stockActual= 30 stockMinimo = 50
+Codigo = 4 NombreComercial=  Saladix stockActual= 10 stockMinimo = 15

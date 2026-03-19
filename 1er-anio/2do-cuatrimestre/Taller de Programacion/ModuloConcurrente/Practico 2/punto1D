@@ -1,0 +1,100 @@
+programa ejemplo
+procesos
+  proceso sacarMaximos(E flor:numero; ES m1:numero; ES m2:numero;E quienEs:numero; ES quienMax:numero)
+  comenzar
+    si (flor > m1)
+      m2:= m1
+      m1:= flor
+      quienMax:= quienEs
+    sino
+      m2:= flor
+  fin
+  proceso juntarF(ES f:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      f:= f + 1
+  fin
+  proceso recorrerAvenida(ES flores:numero)
+  comenzar
+    repetir 9
+      juntarF(flores)
+      mover
+    juntarF(flores)
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot t1
+  variables
+    flores: numero
+    numID:numero
+  comenzar
+    flores := 0
+    RecibirMensaje(numID,RJ)
+    recorrerAvenida(flores)
+    EnviarMensaje(numID,RJ)
+    EnviarMensaje(flores,RJ)
+  fin
+  robot t3
+  variables
+    flores:numero
+    diferencia:numero
+    max1: numero
+    max2: numero
+    num:numero
+    quien:numero
+    quienMax:numero
+  comenzar
+    max1 := -1
+    max2:=-1
+    num:=1
+    EnviarMensaje(1,R1)
+    repetir 6
+      RecibirMensaje(quien,*)
+      si(quien = 1)
+        RecibirMensaje(flores,R1)
+      sino
+        si (quien=2)
+          RecibirMensaje(flores,R2)
+        sino
+          si (quien=3)
+            RecibirMensaje(flores,R3)
+          sino
+            si (quien=4)
+              RecibirMensaje(flores,R4)
+            sino
+              si (quien=5)
+                RecibirMensaje(flores,R5)
+              sino
+                si (quien = 6)
+                  RecibirMensaje(flores,R6)
+      sacarMaximos(flores,max1,max2,quien,quienMax)
+    diferencia:=max1-max2
+    Informar('elrobot maximo es',quienMax,'con',max1,'flores')
+    Informar('diferencia con el segundo',diferencia)
+  fin
+variables
+  R2: t1
+  RJ: t3
+  R1: t1
+  R3: t1
+  R4: t1
+  R5: t1
+  R6: t1
+comenzar
+  AsignarArea(R2,ciudad)
+  AsignarArea(RJ,ciudad)
+  AsignarArea(R1,ciudad)
+  AsignarArea(R3,ciudad)
+  AsignarArea(R4,ciudad)
+  AsignarArea(R5,ciudad)
+  AsignarArea(R6,ciudad)
+  Iniciar(R1, 1,1)
+  Iniciar(R2,2,11)
+  Iniciar(R3,3,21)
+  Iniciar(R4,4,31)
+  Iniciar(R5,5,41)
+  Iniciar(R6,6,51)
+  Iniciar(RJ,2,1)
+fin
