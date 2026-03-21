@@ -6,10 +6,26 @@ public class Producto {
 	private String descrip;
 	
 	
-	public Producto(double pe, double pre, String des) {
+	public Producto(String des, double pre, double pe) {
 		this.peso = pe;
 		this.precioXKilo = pre;
 		this.descrip = des;
+	}
+	
+	public void setPrecioPorKilo(double pre) {
+		this.precioXKilo = pre;
+	}
+	
+	public double getPrecioPorKilo() {
+		return this.precioXKilo;
+	}
+	
+	public void setDescripcion(String des) {
+		this.descrip = des;
+	}
+	
+	public void setPeso(double pe) {
+		this.peso = pe;
 	}
 	
 	public double getPrecio() {
@@ -19,4 +35,9 @@ public class Producto {
 	public double getPeso() {
 		return this.peso;
 	}
+	
+	public String getDescripcion() {
+		return this.descrip;
+	}
+
 }

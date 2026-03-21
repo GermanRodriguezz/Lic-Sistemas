@@ -6,7 +6,38 @@ public class Balanza {
 	private double pesoTot;
 	
 	
-	public Balanza(){
+	public Balanza(int cant, double pre, double pes){
+		this.cantidadProd = cant;
+		this.precioTot = pre;
+		this.pesoTot = pes;
+	}
+	
+	public Balanza() {
+		
+	}
+	
+	public int getCantidadDeProductos() {
+		return this.cantidadProd;
+	}
+	
+	public double getPrecioTotal() {
+		return this.precioTot;
+	}
+	
+	public double getPesoTotal() {
+		return this.pesoTot;
+	}
+	
+	public void setCantidadDeProductos(int c) {
+		this.cantidadProd = c;
+	}
+	
+	public void setPrecioTotal(double pre) {
+		this.precioTot = pre;
+	}
+	
+	public void setPesoTotal(double peso) {
+		this.pesoTot = peso;
 	}
 	
 	public void ponerEnCero() {
@@ -25,4 +56,5 @@ public class Balanza {
 		Ticket tk = new Ticket(this.cantidadProd,this.pesoTot,this.precioTot);
 		return tk;
 	}
+
 }
