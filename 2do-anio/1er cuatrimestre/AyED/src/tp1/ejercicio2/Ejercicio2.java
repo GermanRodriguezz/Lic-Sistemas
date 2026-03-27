@@ -1,5 +1,5 @@
-package tp1;
-public class Ejer2 {
+package tp1.ejercicio2;
+public class Ejercicio2 {
 	
 	public static void crearArreglo(int n) {
 		int [] arreglo = new int[n];

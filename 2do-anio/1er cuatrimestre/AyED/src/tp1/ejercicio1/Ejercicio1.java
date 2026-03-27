@@ -1,6 +1,6 @@
-package tp1;
+package tp1.ejercicio1;
 
-public class ejer1 {
+public class Ejercicio1 {
 			
 	public static void imprimirA(int a,int b) {
 		for (int i = a; i <= b; i++) {
