@@ -23,3 +23,15 @@ Thumbs.db
 
 target/
 *.class
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Compilados
+bin/
+*.class
+
+# Otros
+*.log
