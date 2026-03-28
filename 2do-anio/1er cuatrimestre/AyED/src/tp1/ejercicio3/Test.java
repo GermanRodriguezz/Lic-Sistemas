@@ -29,6 +29,6 @@ package tp1.ejercicio3;
 				arregloP[i].setFacultad("UNLP+i");
 				System.out.println(arregloP[i].tusDatos());
 			}
-			
+
 		}
 }
