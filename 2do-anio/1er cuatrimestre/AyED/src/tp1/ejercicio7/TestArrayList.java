@@ -78,6 +78,18 @@ public class TestArrayList {
 		for (Estudiante ec : listECopia) {
 			System.out.println(ec);
 		}
+		// ¿Cuantas formas de copiar una lista existen? ¿Que diferencias existen entre ellas?
+			// hay dos copias, la copia superficial : que crea otra lista distinta pero los elementos son los mismos
+			//copia profunda : creas otra lista y clonas cada estudiante(objeto) son objetos independientes
+		
+		// INCISO E
+		Estudiante eNuevo = new Estudiante("Valentin Ronconi",44444);
+		if (!listE.contains(eNuevo)) {
+			listE.add(eNuevo);
+		}
+		
+		// INCISO F
+		
 		
 	}
 }
