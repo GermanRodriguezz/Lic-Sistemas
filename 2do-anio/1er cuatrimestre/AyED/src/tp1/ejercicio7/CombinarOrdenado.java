@@ -10,19 +10,34 @@ public class CombinarOrdenado {
 		ArrayList<Integer> nue = new ArrayList<Integer>();
 		int pos1 = 0;
 		int pos2 = 0;
-		int ult1 = l1.size();
-		int ult2 = l2.size();
-		return recorrer(l1,l2,nue,pos1,pos2,ult1,ult2);
+		return recorrer(l1,l2,nue,pos1,pos2);
 	}
 	
-	public ArrayList<Integer> recorrer(ArrayList<Integer> l1,ArrayList<Integer> l2,ArrayList<Integer> nuev, int pos1, int pos2, int ult1, int ult2){
-		if (!l1.isEmpty() && (!l2.isEmpty())) {
-			if (l1.get(pos1) > l2.get(pos2)) {
-				nuev.add(l1.get(pos1));
+	
+	public ArrayList<Integer> agregarRestante(ArrayList<Integer> nue, ArrayList<Integer> l, int pos) {
+		if (pos == l.size()) { //caso base
+			return nue;
+		}
+		nue.add(l.get(pos)); // agrega
+		return agregarRestante(nue, l, pos+1); //llama recursivamente
+	}
+	
+	public ArrayList<Integer> recorrer(ArrayList<Integer> l1,ArrayList<Integer> l2,ArrayList<Integer> nuev, int pos1, int pos2){
+			if (pos1 == l1.size()) {
+				return agregarRestante(nuev, l2, pos2);
+			}
+			if (pos2 == l2.size()) {
+				return agregarRestante(nuev, l1, pos1);
 			}
 			else {
-				if (l2.get(pos2))
+				if (l1.get(pos1) < l2.get(pos2)) {
+					nuev.add(l1.get(pos1));
+					 return recorrer(l1,l2,nuev,pos1+1,pos2);
+				}
+				else {
+					nuev.add(l2.get(pos2));
+					 return recorrer(l1,l2,nuev,pos1,pos2+1);
+				}
 			}
 		}
-	}
 }
