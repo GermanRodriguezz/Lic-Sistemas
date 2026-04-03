@@ -1,0 +1,59 @@
+program parcial
+
+rango = 1...300;
+
+vectorCategoria = array [rango] of real;
+
+item = record
+    descripcion : string;
+    costo : real;
+    tipo : string;
+    codcategoria : rango;
+end;
+
+lista = nodo;
+nodo = record
+    dato : item;
+    sig : lista;
+end;
+
+
+procedure insertarOrd(var l:lista2; reg : regaux)
+
+
+
+procedure procesar (l:lista; var l2 :lista2);
+var
+    dniActual : integer;
+    reg : regaux;
+begin
+	while (l <> nil)do
+	begin
+		cod:= l^.dato.codcategoria;
+		monto := v[l.dato.codcategoria] * l^.dato.costo;
+		actual:= l2;
+		while (actual <> nil) and (actual^.dato.categoria <> cod)do
+		begin
+			actual:= actual^.sig;
+		end;
+		if (actual <>nil)then
+		begin
+			actual^.dato.monto:= actual^.dato.monto + monto; // es el mismo dni
+		else
+		    reg.codigo:= cod; 
+		    reg.monto:= monto;
+			agregarAdelante(l2,reg);  
+		end;
+	    l:= l^.sig;
+	end;
+    while (l2 <> nil) do begin
+        insertarOrd(l3,l.dato)
+        l := l.sig;
+    end;
+end;
+
+
+
+var
+begin
+end.
