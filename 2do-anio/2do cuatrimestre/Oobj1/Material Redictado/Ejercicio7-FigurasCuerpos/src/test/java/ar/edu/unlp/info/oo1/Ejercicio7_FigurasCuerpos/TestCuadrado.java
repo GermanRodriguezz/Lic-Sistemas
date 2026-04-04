@@ -1,4 +1,4 @@
-package ar.edu.info.oo1.ej4_figuras;
+package ar.edu.unlp.info.oo1.Ejercicio7_FigurasCuerpos;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
