@@ -19,7 +19,7 @@ public class CajaDeAhorro extends Cuenta{
 		return false;
 	}
 	
-	public void extraerSinControlar(double monto) {
+	protected void extraerSinControlar(double monto) {
 		super.extraerSinControlar(monto + (monto * 0.02));
 	}
 	

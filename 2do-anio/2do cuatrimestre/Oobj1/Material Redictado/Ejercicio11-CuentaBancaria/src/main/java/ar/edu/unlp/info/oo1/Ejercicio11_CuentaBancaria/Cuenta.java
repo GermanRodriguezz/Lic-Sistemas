@@ -15,7 +15,7 @@ public abstract class Cuenta {
 		this.saldo += monto;
 	}
 	
-	public void extraerSinControlar(double monto) {
+	protected void extraerSinControlar(double monto) {
 		this.saldo -= monto;
 	}
 	
