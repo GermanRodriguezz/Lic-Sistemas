@@ -129,4 +129,10 @@ public class BinaryTree<T> {
 		}
 		else System.out.println("árbol vacío");
 	}
+	
+    public void imprimirArbol() {
+        if(this.hasLeftChild()) this.getLeftChild().imprimirArbol();
+        System.out.print(this.getData() + " ");
+        if(this.hasRightChild()) this.getRightChild().imprimirArbol();
+    }
 }
