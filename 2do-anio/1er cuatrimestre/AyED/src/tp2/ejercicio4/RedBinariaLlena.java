@@ -24,7 +24,7 @@ public class RedBinariaLlena {
 			totalHD = recorrer(a.getRightChild()); 	/*recorre por la der*/
 		return Math.max(totalHI, totalHD) + a.getData();			/*retorna el maximo entre el total hijo izq e hijo dere*/
 	}
-	
+	/*La estrategia que se uso para resolver el problema es el recorrido en profundidad*/
     public static void main (String[] args) {
         System.out.println("Test mayor retardo");
         BinaryTree<Integer> ab = new BinaryTree<Integer>(4);
