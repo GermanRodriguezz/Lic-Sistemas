@@ -6,6 +6,9 @@ import tp2.ejercicio6.Transformacion;
 public class ParcialArboles {
 	private BinaryTree<Integer> ar;
 	
+	private BinaryTree<Integer> a1;
+	private BinaryTree<Integer> a2;
+	
 	public ParcialArboles(BinaryTree<Integer> a) {
 		this.ar = a;
 	}
@@ -69,6 +72,70 @@ public class ParcialArboles {
 		}
 		return hijos;
 	}
+
+	
+	/*metodo es prefijo
+	 * El método devuelve true si arbol1 es prefijo de arbol2, false en caso contrario.
+	Se dice que un árbol binario arbol1 es prefijo de otro árbol binario arbol2, cuando arbol1 coincide
+	con la parte inicial del árbol arbol2 tanto en el contenido de los elementos como en su
+	estructura. Por ejemplo, en la siguiente imagen: arbol1 ES prefijo de arbol2.*/
+	
+	public boolean esPrefijo(BinaryTree<Integer> a1 , BinaryTree<Integer> a2) {
+	    if (!a1.isEmpty() && !a2.isEmpty()) 
+	        return recorrido(a1,a2);
+	    else 
+	        return false;
+	}
+
+	public boolean casoBase(BinaryTree<Integer> a1, BinaryTree<Integer> a2) {
+	    return a1.getData().equals(a2.getData());
+	}
+
+	public boolean recorrido(BinaryTree<Integer> a1, BinaryTree<Integer> a2) {
+
+	    // comparo contenido
+	    if (!casoBase(a1, a2)) 
+	        return false;
+
+	    // hijo izquierdo
+	    if (a1.hasLeftChild()) {
+	        if (a2.hasLeftChild()) {
+	            if (!recorrido(a1.getLeftChild(), a2.getLeftChild()))
+	                return false;
+	        } else {
+	            return false;
+	        }
+	    }
+
+	    // hijo derecho
+	    if (a1.hasRightChild()) {
+	        if (a2.hasRightChild()) {
+	            if (!recorrido(a1.getRightChild(), a2.getRightChild()))
+	                return false;
+	        } else {
+	            return false;
+	        }
+	    }
+
+	    return true;
+	}
+	
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
     public static void main (String[] args) {
         System.out.println("");
         BinaryTree<Integer> ar = new BinaryTree<Integer>(4);
