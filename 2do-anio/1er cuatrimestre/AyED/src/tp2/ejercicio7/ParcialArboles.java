@@ -127,6 +127,10 @@ public class ParcialArboles {
 			private Integer sum;
 			private Integer dif;
 			
+			public registro() {
+				
+			}
+			
 			public void setSum(Integer n) {
 				this.sum = n;
 			}
@@ -134,6 +138,45 @@ public class ParcialArboles {
 			public void setDif(Integer n) {
 				this.dif = n;
 			}	
+			
+			public Integer getSum() {
+				return this.sum;
+			}
+			
+			public Integer getDif() {
+				return this.dif;
+			}
+		}
+		
+		
+		public BinaryTree<registro> sumAndDif(BinaryTree<Integer> arbol){
+			if (!arbol.isEmpty())
+				return recorrer(arbol,0,0);
+			else return null;
+		}
+		
+		public BinaryTree<registro> recorrer(BinaryTree<Integer> a, int suma,int padre){
+			registro r = new registro();
+			
+			int valor = a.getData(); // valor actual
+			 
+			int nuevaSuma = suma + valor; // lo que recibo + el valor actual
+			
+			int nuevaDif = valor - padre;  //el valor actual - el padre anterior
+			
+			r.setSum(nuevaSuma);
+			r.setDif(nuevaDif);
+			
+			BinaryTree<registro> nuevo = new BinaryTree<>(r);
+			
+			if (a.hasLeftChild()) {
+				nuevo.addLeftChild(recorrer(a.getLeftChild(),nuevaSuma,valor));
+			}
+			if (a.hasRightChild()) {
+				nuevo.addRightChild(recorrer(a.getRightChild(),nuevaSuma,valor));
+			}
+			
+			return nuevo;
 		}
 		
 		
