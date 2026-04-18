@@ -120,13 +120,21 @@ public class ParcialArboles {
 	    return true;
 	}
 	
+	/*INCISO 9*/
 
 
-		
-		
-		
-		
-		
+		public class registro{
+			private Integer sum;
+			private Integer dif;
+			
+			public void setSum(Integer n) {
+				this.sum = n;
+			}
+			
+			public void setDif(Integer n) {
+				this.dif = n;
+			}	
+		}
 		
 		
 		
