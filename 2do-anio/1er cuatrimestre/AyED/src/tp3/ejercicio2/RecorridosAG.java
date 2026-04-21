@@ -1,0 +1,103 @@
+package tp3.ejercicio2;
+
+import java.util.*;
+import java.util.Iterator;
+
+import tp3.ayed2024.src.tp3.ejercicio1.GeneralTree;
+
+public class RecorridosAG {
+	/*
+	 * 
+	 * RECORRIDO PRE ORDEN
+	 * 
+	 * */
+	public List<Integer> numerosImparesMayoresQuePreOrden(GeneralTree<Integer> a, Integer n){
+		List<Integer> lista = new LinkedList<Integer>();
+		if (a.getData() != null && !a.isEmpty()) {
+			recorrerPRE(a,lista,n);
+		}
+		return lista;
+	}
+	
+	
+
+	private void recorrerPRE(GeneralTree<Integer> a, List<Integer> l, Integer num){
+		if (a.getData() % 2 == 1) {
+			if (a.getData() > num) {
+				l.add(a.getData());
+			}
+		}
+		if (a.hasChildren()) {
+			List<GeneralTree<Integer>> hijos = a.getChildren();
+			for (GeneralTree<Integer> hijo : hijos) recorrerPRE(hijo,l,num);
+		}
+	}
+	
+	
+	/*
+	 * 
+	 * RECORRIDO IN ORDEN
+	 * 
+	 * */
+	public List<Integer> numerosImparesMayoresQueInOrden(GeneralTree<Integer> a, Integer n){
+		List<Integer> lista = new LinkedList<Integer>();
+		if (!a.isEmpty()) {
+			recorrerIN(a,lista,n);
+		}
+		return lista;
+	}
+		
+	private static void recorrerIN(GeneralTree<Integer> a, List<Integer> l, Integer n){
+		List<GeneralTree<Integer>> children = a.getChildren();
+		if (a.hasChildren()) {
+			Iterator<GeneralTree<Integer>> it = children.iterator();
+			if (it.hasNext())
+				recorrerIN(it.next(),l,n);
+		
+			if (a.getData() % 2 == 1) {
+				if (a.getData() > n)
+					l.add(a.getData());
+			while (it.hasNext()) {
+				recorrerIN(it.next(),l,n);
+				}
+			}
+		}
+		else {
+			if (a.getData() % 2 == 1) {
+				if (a.getData() > n)
+					l.add(a.getData());
+			}
+		}
+	}
+	
+	/*
+	 * 
+	 * RECORRIDO POST ORDEN
+	 * 
+	 * 
+	 * */
+	
+	public List<Integer> numerosImparesMayoresQuePost(GeneralTree<Integer> a, Integer n){
+		List<Integer> lista = new LinkedList<Integer>();
+		if (!a.isEmpty()) {
+			recorrerPOST(a,lista,n);
+		}
+		return lista;
+	}
+	
+	private static void recorrerPOST(GeneralTree<Integer> a, List<Integer> l, Integer num) {
+		if (a.hasChildren()) {
+			List<GeneralTree<Integer>> hijos = a.getChildren();
+			for (GeneralTree<Integer> hijo : hijos) {
+				recorrerPOST(hijo,l,num);
+				}				
+			} 
+		else {	
+			if (a.getData() % 2 == 1) {
+				if (a.getData() > num) 
+					l.add(a.getData());
+			}
+		}
+	}
+}
+
