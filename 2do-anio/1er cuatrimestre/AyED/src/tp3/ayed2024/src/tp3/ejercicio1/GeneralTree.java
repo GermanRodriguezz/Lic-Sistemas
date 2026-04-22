@@ -58,8 +58,18 @@ public class GeneralTree<T>{
 	}
 	
 	public int altura() {	 
+			if (this.isLeaf())
+				return  0;
+			int max = 0;
+			/*es decir tenes hijos*/
+				List<GeneralTree<T>> children = this.getChildren();
+				for (GeneralTree<T> child : children) {
+					/*como cada hijo es un camino separado defino su propia alt*/
+					int alt = child.altura();
+					if (alt > max) max = alt;
+				}
 			
-		return 0;
+		return max + 1;
 	}
 	
 	public int nivel(T dato){
