@@ -1,7 +1,8 @@
 package tp3.ejercicio2;
 
 import java.util.*;
-import java.util.Iterator;
+
+import tp1.ejercicio8.Queue;
 
 import tp3.ayed2024.src.tp3.ejercicio1.GeneralTree;
 
@@ -99,5 +100,38 @@ public class RecorridosAG {
 			}
 		}
 	}
+	
+	
+	/*
+	 * 
+	 * 
+	 * RECORRIDO POR NIVELES
+	 * 
+	 * 
+	 * */
+	public List<Integer> numerosImparesMayoresQuePorNiveles(GeneralTree<Integer> a , Integer n){
+		LinkedList<Integer> lista = new LinkedList<Integer>();
+		if (!a.isEmpty()) {
+			recorrerNIVEL(a,lista,n);
+		}
+		return lista;
+	}
+	
+	private void recorrerNIVEL(GeneralTree<Integer> a, List<Integer> l, Integer n) {
+		GeneralTree<Integer> tree_aux;
+		
+		Queue<GeneralTree<Integer>> queue = new Queue<GeneralTree<Integer>>();
+		queue.enqueue(a); /*guardamos en la cola el arbol recibido*/
+		
+		while (!queue.isEmpty()) {
+			tree_aux = queue.dequeue(); /*aca nuestra variable auxiliar tomara el valor de el arbol que encolamos*/
+			if (tree_aux.getData() % 2 == 1 && tree_aux.getData() > n) l.add(tree_aux.getData());
+			List<GeneralTree<Integer>> children = tree_aux.getChildren();
+			for (GeneralTree<Integer> child : children) {
+				queue.enqueue(child);
+			}
+		}
+	}
+	
 }
 
