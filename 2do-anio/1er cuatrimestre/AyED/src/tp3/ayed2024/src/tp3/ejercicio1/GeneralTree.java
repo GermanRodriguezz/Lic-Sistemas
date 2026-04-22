@@ -3,6 +3,8 @@ package tp3.ayed2024.src.tp3.ejercicio1;
 import java.util.LinkedList;
 import java.util.List;
 
+import tp1.ejercicio8.Queue;
+
 public class GeneralTree<T>{
 
 	private T data;
@@ -72,12 +74,49 @@ public class GeneralTree<T>{
 		return max + 1;
 	}
 	
+	private int retornarNivel(GeneralTree<T> a, T dato) {
+		if (a.getData().equals(dato)) 
+			return 0;
+		List<GeneralTree<T>> children = a.getChildren();
+		for (GeneralTree<T> child : children) {
+			int level = retornarNivel(child, dato);
+			
+			if (level != -1) /*esto quiere decir que encontro el dato */
+				return level + 1; /*1 mas porque vuelve de un posterior llamado donde encontró el dato pero no suma en ese momento el nivel,
+				 					cuando vuelve sumo el nivel que bajó*/
+		}
+		return -1;
+	}
+	
 	public int nivel(T dato){
-		return 0;
+		if (!this.isEmpty() && dato != null) {
+			return retornarNivel(this,dato);
+		}
+		return -1;
 	  }
 
 	public int ancho(){
 		
-		return 0;
+		if (!this.isEmpty())
+			return 0;
+		
+		Queue<GeneralTree<T>> cola = new Queue<GeneralTree<T>>();
+		cola.enqueue(this); /*encolo la raiz*/
+		int max = 0;
+		
+		while (!cola.isEmpty()) { /*mientras la cola no este vacia*/
+			int size = cola.size(); /*cantidad de nodos que tengo del nivel actual*/
+			if (size > max) 
+				max = size;
+			for (int i = 0; i< size; i++) {		/*for para recorrer los hijos */
+				GeneralTree<T> nodo = cola.dequeue(); /*nodo es lo que tiene la cola */
+				
+				List<GeneralTree<T>> children = nodo.getChildren(); /*lista de los hijos del nodo*/
+				for (GeneralTree<T> child : children) {		/* recorre los hijos del nodo*/
+					cola.enqueue(child);					/*encola los hijos*/
+				}
+			}
+		}
+		return max;
 	}
 }
