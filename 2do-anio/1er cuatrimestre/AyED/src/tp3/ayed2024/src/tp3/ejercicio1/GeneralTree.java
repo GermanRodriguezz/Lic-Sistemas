@@ -110,7 +110,6 @@ public class GeneralTree<T>{
 				max = size;
 			for (int i = 0; i< size; i++) {		/*for para recorrer los hijos */
 				GeneralTree<T> nodo = cola.dequeue(); /*nodo es lo que tiene la cola */
-				
 				List<GeneralTree<T>> children = nodo.getChildren(); /*lista de los hijos del nodo*/
 				for (GeneralTree<T> child : children) {		/* recorre los hijos del nodo*/
 					cola.enqueue(child);					/*encola los hijos*/
