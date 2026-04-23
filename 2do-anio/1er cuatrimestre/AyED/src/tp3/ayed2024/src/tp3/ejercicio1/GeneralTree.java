@@ -97,7 +97,7 @@ public class GeneralTree<T>{
 
 	public int ancho(){
 		
-		if (!this.isEmpty())
+		if (this.isEmpty())
 			return 0;
 		
 		Queue<GeneralTree<T>> cola = new Queue<GeneralTree<T>>();
