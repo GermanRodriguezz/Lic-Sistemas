@@ -19,6 +19,7 @@ public class RedDeAguaPotable {
 		
 		if (!a.hasChildren())
 			return c;
+		
 		double min = Double.MAX_VALUE;
 			
 		int canthijos = a.getChildren().size(); /*cant de hijos - cantidad para dividir el caudal*/
@@ -33,7 +34,7 @@ public class RedDeAguaPotable {
 			double minDelHijo = min(hijo,caudalDelHijo);
 			
 			if (minDelHijo <= min) {
-					min = minDelHijo;
+				min = minDelHijo;
 			}
 		}
 		return min;
