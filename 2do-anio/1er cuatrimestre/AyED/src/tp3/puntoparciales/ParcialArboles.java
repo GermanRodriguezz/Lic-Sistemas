@@ -1,8 +1,12 @@
 package tp3.puntoparciales;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import tp3.ayed2024.src.tp3.ejercicio1.GeneralTree;
+
+/*PUNTO 9*/
 
 public class ParcialArboles {
 
@@ -36,4 +40,79 @@ public class ParcialArboles {
 			return true;
 		/*cuando encuentra una hoja debe verificar los valores*/
 		}
+
+
+
+/*PUNTO 10*/
+
+		public static List<Integer> resolver(GeneralTree<Integer> a){
+			List<Integer> listaResultado = new LinkedList<Integer>();
+			
+			int sumaMax = -1;
+			
+			if (a.isEmpty()) {
+				return listaResultado;
+			}
+			devolverCamino(a,listaResultado, new LinkedList<Integer>(),0,sumaMax,0);
+			return listaResultado;
+		}
+		
+		private static int devolverCamino(GeneralTree<Integer> a, List<Integer> lr, List<Integer> la, Integer suma, int sumaMax,Integer nivel){
+			boolean agg = false;
+			
+			suma += a.getData() * nivel;
+			
+			if (a.getData().equals(1)) {
+				la.add(a.getData());
+				agg = true;
+			}
+			
+			if (a.isLeaf()) {
+				if (suma > sumaMax) {
+					sumaMax = suma;
+					lr.clear();
+					lr.addAll(la); /*llegamos a una hoja y vemos si la suma que lleva es mayor que max*/
+				}
+			}
+			
+			for (GeneralTree<Integer> child : a.getChildren()) {
+				sumaMax = devolverCamino(child, lr, la, suma, sumaMax, nivel+1);
+			}
+			
+			
+			if (agg)
+				la.remove(la.size()-1);
+			return sumaMax;
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 }
