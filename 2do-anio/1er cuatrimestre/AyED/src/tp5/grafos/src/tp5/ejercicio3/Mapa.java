@@ -4,7 +4,6 @@ import tp5.grafos.src.tp5.ejercicio1.Graph;
 import tp5.grafos.src.tp5.ejercicio1.Vertex;
 import tp5.grafos.src.tp5.ejercicio1.Edge;
 import java.util.*;
-import java.util.Iterator;
 public class Mapa {
 	private Graph<String> mapaCiudades;
 	
@@ -72,8 +71,62 @@ public class Mapa {
 		
 	}
 	
+	/*--------------------------------------INCISO 2----------------------------------------------*/
+	/*
+	 * Retorna la lista de ciudades que forman un camino desde ciudad1 a 
+		, sin pasar por las ciudades que están contenidas en la lista ciudades
+		 pasada por parámetro, si no existe camino retorna la lista vacía. 
+		 (Sin tener en cuenta el combustible).
+	 * 
+	 */
+	
+	private boolean caminoExcepcional(Vertex<String> origen, Vertex<String> destino, boolean [] marca,List<String> lista, List<String> ciudades) {
+		boolean encontre = false;
+		
+		int posAct = origen.getPosition();
+		marca[posAct] = true;
+		/*marca[origen.getPosition()];*/
+		lista.add(origen.getData());
+		
+		/*caso base*/
+		if (origen.equals(destino)) {
+			return true;
+		}
+		else {
+			List<Edge<String>> adyacentes = this.mapaCiudades.getEdges(origen);
+			
+			Iterator<Edge<String>> it = adyacentes.iterator();
+			
+			while (it.hasNext() && !encontre) {
+				
+				Vertex<String> ver = it.next().getTarget();
+				int pos = ver.getPosition();
+				
+				if (!marca[pos] && !ciudades.contains(ver.getData())) {
+					encontre = caminoExcepcional(ver, destino, marca, lista, ciudades);
+				}
+			}
+			}
+		if (!encontre) {
+			lista.remove(lista.size()-1);
+		}
+		return false;
+	}
+	
 	public List<String> devolverCaminoExceptuando(String ciudad1, String ciudad2, List<String> ciudades){
 		
+		Vertex<String> origen = this.mapaCiudades.search(ciudad1);
+		Vertex<String> destino = this.mapaCiudades.search(ciudad2);
+		boolean [] marca = new boolean [this.mapaCiudades.getSize()];
+		
+		
+		List<String> listaResultante = new LinkedList<String>();
+		
+		if (origen != null && destino != null && ciudades.contains(ciudad1) && ciudades.contains(ciudad2)) {
+			caminoExcepcional(origen,destino,marca,listaResultante,ciudades);
+		}
+		
+		return listaResultante;
 	}
 	
 	public List<String> caminoMasCorto(String ciudad1, String ciudad2){
