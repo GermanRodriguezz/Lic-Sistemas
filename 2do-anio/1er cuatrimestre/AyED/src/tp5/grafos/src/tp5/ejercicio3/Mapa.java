@@ -128,8 +128,76 @@ public class Mapa {
 		
 		return listaResultante;
 	}
+	/*------------------------------INCISO 3-------------------------------------------*/
+	/*Retorna la lista de ciudades que forman el camino más corto para 
+	 * llegar de ciudad1 a ciudad2, si no existe camino retorna la lista vacía. (Las rutas poseen la distancia).
+	 * 
+	 * 
+	 * */
+	
+	private class Resultado {
+		private int distanciaMinima;
+		private List<String> mejorCamino;
+		
+		public Resultado() {
+			this.distanciaMinima = Integer.MAX_VALUE;
+			this.mejorCamino = new LinkedList<String>();
+		}
+	}
+	
+	public void caminoCorto(Vertex<String> origen, Vertex<String> destino, boolean [] marca, List<String> camino,Resultado r,int distanciaActual) {
+		
+		marca[origen.getPosition()] = true; /*marco el vertice como visitado*/
+		
+		camino.add(origen.getData()); /*agregamos la ciudad actual al camino*/
+		
+		if (origen.equals(destino)) { /*si encontre el destino*/
+			
+			if (distanciaActual < r.distanciaMinima) {
+				
+				r.distanciaMinima = distanciaActual;
+				/*limpio el camino anterior y actualizo*/
+				r.mejorCamino.clear();
+				r.mejorCamino.addAll(camino);
+			}
+		}
+		else {
+			List<Edge<String>> adyacentes = this.mapaCiudades.getEdges(origen);
+			
+			Iterator<Edge<String>> it = adyacentes.iterator();
+			
+			while (it.hasNext()) {
+				Edge<String> e = it.next();	/*tomo la arista actual*/
+				Vertex<String> ver = e.getTarget();	/*tomo el vertice destino de la arista*/
+				
+				if (!marca[ver.getPosition()]) {	/*si el vertice destino no fue visitado*/
+					/*										acumulo la distancia recorrida hasta el nuevo vertice*/
+					caminoCorto(ver,destino,marca,camino,r,distanciaActual+e.getWeight());
+				}
+			}
+		}
+		/* backtracking : elimino la ciudad actual del camino*/
+		camino.remove(camino.size()-1);
+		/*para que este vertice pueda ser visitado lo marco en false*/
+		marca[origen.getPosition()] = false;
+		
+	}
 	
 	public List<String> caminoMasCorto(String ciudad1, String ciudad2){
+		List<String> listaResultante =new LinkedList<String>();
+		
+		Vertex<String> origen = this.mapaCiudades.search(ciudad1);
+		Vertex<String> destino = this.mapaCiudades.search(ciudad2);
+		
+		boolean [] marca = new boolean [this.mapaCiudades.getSize()];
+		Resultado r = new Resultado();
+		
+		if (origen != null && destino != null) {
+			caminoCorto(origen, destino,marca,listaResultante,r,0);
+			listaResultante = r.mejorCamino;
+		}
+		
+		return listaResultante;
 		
 	}
 	
