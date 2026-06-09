@@ -209,14 +209,37 @@ public class Mapa {
 	 * 
 	 * */
 	
-	private void caminoSin(Vertex<String> origen, Vertex<String> destino, boolean [] marca,List<String> camino) {
+	private boolean caminoSin(Vertex<String> origen, Vertex<String> destino, boolean [] marca,List<String> camino,int tanque) {
+		boolean encontre = false;
+		
 		marca[origen.getPosition()] = true;
 		
 		camino.add(origen.getData());
 		
 		if (origen.equals(destino)) {
-			
+			encontre = true;
+			return encontre;
 		}
+		else {
+			List<Edge<String>> adyacentes = this.mapaCiudades.getEdges(origen);
+			
+			Iterator<Edge<String>> it = adyacentes.iterator();
+			
+			while (it.hasNext() && !encontre) {
+				
+				Edge<String> e = it.next();
+				Vertex<String> ver = e.getTarget();
+				
+				if (!marca[ver.getPosition()] && e.getWeight() <= tanque) {
+					encontre = caminoSin(ver, destino, marca, camino, tanque-e.getWeight());
+				}
+			}
+			if (!encontre) {
+				camino.remove(camino.size()-1);
+			}
+			marca[origen.getPosition()] = false;
+		}
+		return encontre;
 	}
 	
 	public List<String> caminoSinCargarCombustible(String ciudad1, String ciudad2, int tanqueAuto){
@@ -228,7 +251,7 @@ public class Mapa {
 		List<String> listaResultante = new LinkedList<String>();
 		
 		if (origen != null && destino != null && tanqueAuto > 0) {
-			caminoSin(origen,destino,marca,tanqueAuto,listaResultante);
+			caminoSin(origen,destino,marca,listaResultante,tanqueAuto);
 		}
 		
 		return listaResultante;
