@@ -200,9 +200,38 @@ public class Mapa {
 		return listaResultante;
 		
 	}
+	/*-----------------------------INCISO 4---------------------------------------*/
+	/*
+	 * Retorna la lista de ciudades que forman un camino para llegar de ciudad1 a
+	 *  ciudad2. El auto no debe quedarse sin combustible y no puede cargar. 
+	 *  Si no existe camino retorna la lista vacía
+	 * 
+	 * 
+	 * */
+	
+	private void caminoSin(Vertex<String> origen, Vertex<String> destino, boolean [] marca,List<String> camino) {
+		marca[origen.getPosition()] = true;
+		
+		camino.add(origen.getData());
+		
+		if (origen.equals(destino)) {
+			
+		}
+	}
 	
 	public List<String> caminoSinCargarCombustible(String ciudad1, String ciudad2, int tanqueAuto){
+		Vertex<String> origen = this.mapaCiudades.search(ciudad1);
+		Vertex<String> destino = this.mapaCiudades.search(ciudad2);
 		
+		boolean [] marca = new boolean [this.mapaCiudades.getSize()];
+		
+		List<String> listaResultante = new LinkedList<String>();
+		
+		if (origen != null && destino != null && tanqueAuto > 0) {
+			caminoSin(origen,destino,marca,tanqueAuto,listaResultante);
+		}
+		
+		return listaResultante;
 	}
 	
 	public List<String> caminoConMenorCargaDeCombustible(String ciudad1, String ciudad2, int tanqueAuto){
