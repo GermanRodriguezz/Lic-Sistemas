@@ -102,7 +102,7 @@ public class Mapa {
 				Vertex<String> ver = it.next().getTarget();
 				int pos = ver.getPosition();
 				
-				if (!marca[pos] && !ciudades.contains(ver.getData())) {
+				if (!marca[pos]) {
 					encontre = caminoExcepcional(ver, destino, marca, lista, ciudades);
 				}
 			}
@@ -111,6 +111,15 @@ public class Mapa {
 			lista.remove(lista.size()-1);
 		}
 		return false;
+	}
+	
+	private void marcarVertices(List<String> ciudades, boolean [] marca) {
+		for (String c : ciudades) {
+			Vertex<String> vertice = this.mapaCiudades.search(c);
+			if (vertice != null) {
+				marca[vertice.getPosition()] = true;
+			}
+		}
 	}
 	
 	public List<String> devolverCaminoExceptuando(String ciudad1, String ciudad2, List<String> ciudades){
@@ -122,7 +131,9 @@ public class Mapa {
 		
 		List<String> listaResultante = new LinkedList<String>();
 		
-		if (origen != null && destino != null && ciudades.contains(ciudad1) && ciudades.contains(ciudad2)) {
+		this.marcarVertices(ciudades, marca);
+		
+		if (origen != null && destino != null) {
 			caminoExcepcional(origen,destino,marca,listaResultante,ciudades);
 		}
 		
