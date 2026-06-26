@@ -1,10 +1,15 @@
 package Parciales;
 
-import java.util.List;
+/*
+ * Sea la clase NivelArbol que tiene una variable de instancia árbol con un ArbolBinario<integer> ya
+inicializado. Usted debe implementar el método minEnNivelAB(int n): ArbolBinario<Integer> que
+devuelve el subárbol hoja con menor valor en el nivel n del árbol. De haber más de uno devuelve el
+primero encontrado. Considere que n es un nivel válido del árbol. Sin embargo, puede suceder que no
+existan hojas en ese nivel, en ese caso, debe devolver null. Realiza el recorrido por niveles*/
 
 import tp1.ejercicio8.Queue;
 import tp2.ejercicio1.BinaryTree;
-import tp3.ayed2024.src.tp3.ejercicio1.GeneralTree;
+
 
 public class ParcialMinimoEnElNivel {
 	private BinaryTree<Integer> arbol;
