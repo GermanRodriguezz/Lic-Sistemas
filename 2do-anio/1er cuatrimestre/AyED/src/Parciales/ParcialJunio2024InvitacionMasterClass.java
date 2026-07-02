@@ -79,7 +79,7 @@ public class ParcialJunio2024InvitacionMasterClass {
 	
 	
 	public List<informacion> invitacionMasterClass(Graph<String> red, String usuario, int distancia, int limite){
-		
+		/*AGREGAR VERIFICACION*/
 		Vertex<String> origen = red.search(usuario);
 		
 		List<informacion> usuarios = new LinkedList<informacion>();

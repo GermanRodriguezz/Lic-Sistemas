@@ -1,6 +1,7 @@
 package tp3.puntoparciales;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,27 +20,30 @@ public class ParcialArboles {
 		}
 		
 		private static boolean verificarHijos(GeneralTree<Integer> a) {
-			if (a.hasChildren()) {
-				
-				int hijoMin = Integer.MAX_VALUE;
-				List<GeneralTree<Integer>> hijos = a.getChildren();
-				
-				for (GeneralTree<Integer> hijo : hijos) {
-					/*pregunta si el valor del hijo actual es el mas chico*/
-					if (hijo.getData() < hijoMin) {
-						hijoMin = hijo.getData();
-					}
-					if(!verificarHijos(hijo))
-						return false;
-				}
-				
-				if (!a.getData().equals(hijoMin)){
-					return false;
+			if (!a.hasChildren()) {
+				return true;
+			}
+			int hijoMin = Integer.MAX_VALUE;
+			List<GeneralTree<Integer>> hijos = a.getChildren();
+			
+			for (GeneralTree<Integer> hijo : hijos) {
+				/*pregunta si el valor del hijo actual es el mas chico*/
+				if (hijo.getData() < hijoMin) {
+					hijoMin = hijo.getData();
 				}
 			}
-			return true;
+			Iterator<GeneralTree<Integer>> ady = hijos.iterator();
+				
+			boolean puede = a.getData() == hijoMin;
+			
+			while (ady.hasNext() && puede) {
+					
+				puede = verificarHijos(ady.next());
+	
+			}			
 		/*cuando encuentra una hoja debe verificar los valores*/
-		}
+		return puede;
+	}
 
 
 
