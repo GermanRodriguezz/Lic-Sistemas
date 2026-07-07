@@ -11,18 +11,16 @@ import tp5.grafos.src.tp5.ejercicio1.Vertex;
 public class ParcialGrafo2023Tactica {
 	private Graph<String> grafo;
 	
-	private boolean recorrer(Vertex<String> origen, Vertex<String> destino, List<String> camino, List<String> caminoAct, Graph<String> jugadores,boolean [] marca,int potencia,int total) {
+	private boolean recorrer(Vertex<String> origen, Vertex<String> destino, List<String> camino, Graph<String> jugadores,boolean [] marca,double potencia,int total) {
 		boolean encontre = false;
 		marca[origen.getPosition()] = true;
 		
 		camino.add(origen.getData());
 		
-		if (origen.getData().equals(destino.getData())) {
-			double prom = total % camino.size();
+		if (origen.equals(destino)) {
+			double prom = total / camino.size();
 			if (prom >= potencia) {
-				camino.clear();
-				camino.addAll(new LinkedList<String>(caminoAct));
-				return true;
+				return  true;
 			}
 		}
 		else {
@@ -32,20 +30,20 @@ public class ParcialGrafo2023Tactica {
 			Iterator<Edge<String>> it = adyacentes.iterator();
 			
 			while (it.hasNext() && !encontre) {
-					if (!marca[it.next().getTarget().getPosition()] && !encontre) {
-						
-						marca[it.next().getTarget().getPosition()] = true;
-						
-						encontre = recorrer(it.next().getTarget(),destino,camino,caminoAct,jugadores,marca,potencia,total + arista.getWeight());
-						
-					}
+				Edge<String> arista = it.next();
+				Vertex<String> ver = arista.getTarget();
+				if (!marca[ver.getPosition()] && !encontre) {
 				
+					encontre = recorrer(ver,destino,camino,jugadores,marca,potencia,total + arista.getWeight());
+						
+				}	
 			}
-
-			
+			if (!encontre) {
+				camino.remove(camino.size()-1);
+			}
 		}
-		
-		
+		marca[origen.getPosition()] = false;
+		return encontre;
 	}
 	
 	public List<String> tactica (Graph<String> jugadores, String arquero, String delantero, double potencia){
@@ -56,7 +54,7 @@ public class ParcialGrafo2023Tactica {
 		if (origen != null && destino != null) {
 			
 			boolean marca [] = new boolean [jugadores.getSize()];
-			recorrer(origen,destino,camino,new LinkedList<String>(),jugadores,marca,potencia,0);
+			recorrer(origen,destino,camino,jugadores,marca,potencia,0);
 			
 		}
 		return camino;
