@@ -31,7 +31,6 @@ public class ParcialCaminoPar {
 		if (a.isLeaf()) {		/*si estoy en una hoja*/
 			if (cantNodos % 2 == 0) {	/*si la cantidad de nodos que llevo es par entonces debo agregar el camino a la lista*/
 				caminos.add(new LinkedList<Character>(camino));
-				return;
 			}
 		}
 		else {
@@ -41,7 +40,6 @@ public class ParcialCaminoPar {
 			}
 		}
 		camino.remove(camino.size()-1); /*es una hoja pero no cumple, elimino siempre*/
-		return;
 	}
 	
 	public List<List<Character>> caminosPares (GeneralTree<Character> a){
