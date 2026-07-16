@@ -1,4 +1,4 @@
-package Finales2026;
+package FinalMarzo26;
 
 public class Oficina {
 	private boolean amueblada;

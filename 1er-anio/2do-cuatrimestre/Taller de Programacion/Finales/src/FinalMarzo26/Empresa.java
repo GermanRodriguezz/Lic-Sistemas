@@ -1,4 +1,4 @@
-package Finales2026;
+package FinalMarzo26;
 import java.util.Scanner;
 public class Empresa {
 	private String nameEmpresa;
