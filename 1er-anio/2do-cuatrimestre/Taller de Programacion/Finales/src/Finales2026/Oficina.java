@@ -28,12 +28,13 @@ public class Oficina {
 		this.costoDiario = c;
 	}
 	
-	public void aggInquilino(Persona inq) {
+	public void setInquilino(Persona inq) {
 		this.inquilino = inq;
 	}
 	
 	public void setAmueblada(boolean ok) {
 		this.amueblada = ok;
 	}
+	
 	
 }
