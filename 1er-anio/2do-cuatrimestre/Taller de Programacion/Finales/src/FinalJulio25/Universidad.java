@@ -6,10 +6,7 @@ public class Universidad {
 	
 	public Universidad(int cantidadAlumnos) {
 		this.alumnos = new Alumnos[cantidadAlumnos];
-		
-		for (int i = 0;i < cantidadAlumnos; i++) {
-			alumnos[i] = new Alumnos();
-		}
+
 		this.cantAlumnos = 0;
 	}
 	
@@ -24,12 +21,11 @@ public class Universidad {
 	
 	
 	/*B*/
-	public void agregarExamen(String legajo) {
+	public void agregarExamen(String legajo, Examen exm) {
 		int i = 0;
 		boolean encontre = false;
 		while (i < cantAlumnos && !encontre) {
 			if (alumnos[i].getLegajo().equals(legajo)) {
-				Examen exm = new Examen(7, 2025, 6, "Escrito");
 				alumnos[i].agregarExm(exm);
 				encontre = true;
 			}

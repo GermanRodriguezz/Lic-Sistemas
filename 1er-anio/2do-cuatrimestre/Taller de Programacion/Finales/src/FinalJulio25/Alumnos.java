@@ -19,9 +19,6 @@ public class Alumnos {
 		this.cantExamenes = 0;
 		this.examenes = new Examen[cantidadExamen];
 		
-		for (int i = 0; i < cantidadExamen; i++) {
-			examenes[i] = new Examen();
-		}
 	}
 	
 	public String getNombreApellido() {
@@ -59,9 +56,9 @@ public class Alumnos {
 	public double devolverPromedioDelAlumno() {
 		int calificaciones = 0;
 		for (int i = 0; i < cantExamenes; i++) {
-			calificaciones = examenes[i].getCalificacion();
+			calificaciones += examenes[i].getCalificacion();
 		}
-		return calificaciones / cantExamenes;
+		return (double) calificaciones / cantExamenes;
 	}
 	
 	
