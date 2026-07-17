@@ -22,7 +22,7 @@ public class Alumnos {
 	}
 	
 	public String getNombreApellido() {
-		return this.nombre + this.apellido;
+		return this.nombre +" "+ this.apellido;
 	}
 	
 	public String getLegajo() {
