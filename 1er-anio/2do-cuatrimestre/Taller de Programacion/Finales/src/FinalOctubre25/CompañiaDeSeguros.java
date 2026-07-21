@@ -32,7 +32,9 @@ public class CompañiaDeSeguros {
 	/*C*/
 	public void aumentarCuotas(double unPorcentaje, int unRubro) {
 		for (int i = 0; i < dimension[unRubro]; i++) {
-			this.polizas[unRubro][i].aumentarCuota(unPorcentaje);;
+			if (polizas[unRubro][i].getVigente()) {
+				this.polizas[unRubro][i].aumentarCuota(unPorcentaje);;
+			}
 		}
 	}
 	

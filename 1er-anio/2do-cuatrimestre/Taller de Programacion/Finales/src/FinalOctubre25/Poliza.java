@@ -35,9 +35,12 @@ public class Poliza {
 		this.cuotaMensual = monto;
 	}
 	
+	public boolean getVigente() {
+		return this.vigente;
+	}
+	
 	public void aumentarCuota(double aumento) {
-		if (this.vigente)
-			this.cuotaMensual *= aumento;
+		this.cuotaMensual *= aumento;
 	}
 	
 }
