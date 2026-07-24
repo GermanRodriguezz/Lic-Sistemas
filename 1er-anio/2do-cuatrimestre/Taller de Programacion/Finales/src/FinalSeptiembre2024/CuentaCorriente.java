@@ -12,16 +12,8 @@ public class CuentaCorriente extends Cuenta{
 		return this.acuerdo;
 	}
 	
-	public void realizarDeposito(double unMonto) {
-		this.depositar(unMonto);
-	}
-	
 	public boolean esPosibleExtraer(double unMonto) {
 		return (this.getAcuerdo() + this.getSaldo()) > unMonto; 
-	}
-	
-	public boolean extraerDinero(double unMonto) {
-		return this.extraer(unMonto);
 	}
 	
 	public void cobrarMantenimiento() {

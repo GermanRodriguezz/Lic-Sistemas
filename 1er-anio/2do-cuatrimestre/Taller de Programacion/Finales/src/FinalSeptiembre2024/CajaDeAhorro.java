@@ -12,16 +12,8 @@ public class CajaDeAhorro extends Cuenta{
 		return this.numeroTarjetaCredito;
 	}
 	
-	public void realizarDeposito(double unMonto) {
-		this.depositar(unMonto);
-	}
-	
 	public boolean esPosibleExtraer(double unMonto) {
 		return this.getSaldo() > unMonto;
-	}
-	
-	public boolean extraerDinero(double unMonto) {
-		return this.extraer(unMonto);
 	}
 	
 	public void cobrarMantenimiento() {
@@ -50,5 +42,38 @@ public class CajaDeAhorro extends Cuenta{
 		}
 		return resultado;
 	}
+	
+	public static void main (String [] args) {
+		
+		CajaDeAhorro cajaAhorro = new CajaDeAhorro(123456,1001,45872);
+		CuentaCorriente cuentaCorriente = new CuentaCorriente(5000,2001,44872);
+		
+		cajaAhorro.depositar(10000);
+		cuentaCorriente.depositar(20000);
+		
+		if (cajaAhorro.extraer(3000)) {
+			System.out.println("Extraccion realizada en Caja de ahorro");
+		}
+		else {
+			System.out.println("No se pudo realizar la extraccion en caja de ahorro");
+		}
+		
+		if (cuentaCorriente.extraer(22000)) {
+			System.out.println("Extraccion realizada en Cuenta corriente");
+		}
+		else {
+			System.out.println("No se pudo realizar la extraccion en cuenta corriente");
+		}
+		
+		
+		System.out.println(" ----------Resumen de la caja de ahorro---------");
+		System.out.println(cajaAhorro.resumen());
+		
+		System.out.println("-----------Resumen de la cuenta corriente-----------");
+		System.out.println(cuentaCorriente.resumen());
+		
+	}
+	
+	
 	
 }
