@@ -21,7 +21,6 @@ public class ParcialGrafoNivelPopularidad {
 	}
 	
 	private Resultado resolver(Graph<String> red, Vertex<String> origen, int distancia, int umbral, boolean [] marca) {
-		boolean corte = false;
 		boolean encontreNivel = false;
 		int nivel = 0;
 		int cantidadHijos = 0;
@@ -31,7 +30,7 @@ public class ParcialGrafoNivelPopularidad {
 		cola.enqueue(origen);
 		cola.enqueue(null);
 		
-		while (!cola.isEmpty() && !corte) {
+		while (!cola.isEmpty() && !encontreNivel) {
 			
 			Vertex<String> aux = cola.dequeue();
 			
