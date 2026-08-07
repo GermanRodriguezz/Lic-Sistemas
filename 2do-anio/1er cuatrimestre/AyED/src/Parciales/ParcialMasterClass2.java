@@ -79,7 +79,7 @@ public class ParcialMasterClass2 {
 		
 		List<Usuario> lista = new LinkedList<Usuario>();
 		 
-		if (red != null || !red.isEmpty()) {
+		if (red != null && !red.isEmpty()) {
 			
 			boolean [] marca = new boolean [red.getSize()];
 			
