@@ -22,6 +22,7 @@ public class ArbolNietos2daFecha2025 {
 
         // 1. Recorremos por la izquierda
         if (original.hasLeftChild()) {
+        	// Se crea un nuevo arbol que sera asignado;
             BinaryTree<Integer> hijoIzq = new BinaryTree<Integer>();
             nuevo.addLeftChild(hijoIzq);
             // El hijo izquierdo nos devuelve cuántos hijos directos tiene
